@@ -3,10 +3,10 @@ import { DataService} from '../data.service';
 
 @Component({
   selector: 'app-supplier',
-  templateUrl: './supplier.component.html',
-  styleUrls: ['./supplier.component.css']
+  templateUrl: './supplieroverview.component.html',
+  styleUrls: ['./supplieroverview.component.css']
 })
-export class SupplierComponent implements OnInit {
+export class SupplieroverviewComponent implements OnInit {
 
   windturbines: Object;
 

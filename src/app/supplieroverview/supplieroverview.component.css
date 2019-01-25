@@ -13,23 +13,17 @@
     flex: 1
   }
   
-  .elementright{
-    float: left;
-
-  }
-  
   .sidebarelement{
     width: 100%;
     border-bottom: 1px solid;
     border-color: black;
   }
-  
+
   .elementleft{
-    float: left;
+    float: right;
     width: 90%;
-
   }
-
+  
   .endbutton{
     width:100%;
     height:100%;

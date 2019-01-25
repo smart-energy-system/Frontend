@@ -8,10 +8,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule} from '@angular/material';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { SupplierComponent } from './supplier/supplier.component';
+import { SupplierComponent } from './supplieroverview/supplier/supplier.component';
 import { ConsumerComponent } from './consumer/consumer.component';
 import { BatteriesComponent } from './batteries/batteries.component';
 import { PricesComponent } from './prices/prices.component';
+import { SupplieroverviewComponent } from './supplieroverview/supplieroverview.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { PricesComponent } from './prices/prices.component';
     SupplierComponent,
     ConsumerComponent,
     BatteriesComponent,
-    PricesComponent
+    PricesComponent,
+    SupplieroverviewComponent
   ],
   imports: [
     BrowserModule,
