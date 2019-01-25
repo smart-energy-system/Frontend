@@ -2,19 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { DataService} from '../data.service';
 
 @Component({
-  selector: 'app-supplier',
-  templateUrl: './supplieroverview.component.html',
-  styleUrls: ['./supplieroverview.component.css']
+  selector: 'app-consumeroverview',
+  templateUrl: './consumeroverview.component.html',
+  styleUrls: ['./consumeroverview.component.css']
 })
-export class SupplieroverviewComponent implements OnInit {
+export class ConsumeroverviewComponent implements OnInit {
 
-  windturbines: Object;
+  homes: Object;
 
   constructor(private data: DataService) { }
 
   ngOnInit() {
     this.data.getAllWindturbines().subscribe(data => {
-      this.windturbines = data
+      this.homes = data
     });
   }
+
 }

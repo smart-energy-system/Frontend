@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService} from '../data.service';
+import { DataService} from '../../data.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-consumer',
@@ -8,14 +9,13 @@ import { DataService} from '../data.service';
 })
 export class ConsumerComponent implements OnInit {
 
-  homes: Object;
+  id: number;
 
-  constructor(private data: DataService) { }
+  constructor(private data: DataService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.data.getAllHomes().subscribe(data => {
-      this.homes = data
-      console.log(this.homes)
+    this.route.params.subscribe(params => {
+      this.id = +params['id'];
     });
   }
 

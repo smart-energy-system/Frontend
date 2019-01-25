@@ -9,11 +9,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule} from '@angular/material';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SupplierComponent } from './supplieroverview/supplier/supplier.component';
-import { ConsumerComponent } from './consumer/consumer.component';
-import { BatteriesComponent } from './batteries/batteries.component';
+import { ConsumerComponent } from './consumeroverview/consumer/consumer.component';
+import { BatterieComponent } from './batterieoverview/batterie/batterie.component';
 import { PricesComponent } from './prices/prices.component';
 import { SupplieroverviewComponent } from './supplieroverview/supplieroverview.component';
 import { NewsupplierComponent } from './supplieroverview/newsupplier/newsupplier.component';
+import { ConsumeroverviewComponent } from './consumeroverview/consumeroverview.component';
+import { NewconsumerComponent } from './consumeroverview/newconsumer/newconsumer.component';
+import { BatterieoverviewComponent } from './batterieoverview/batterieoverview.component';
+import { NewbatterieComponent } from './batterieoverview/newbatterie/newbatterie.component';
 
 @NgModule({
   declarations: [
@@ -22,10 +26,14 @@ import { NewsupplierComponent } from './supplieroverview/newsupplier/newsupplier
     DashboardComponent,
     SupplierComponent,
     ConsumerComponent,
-    BatteriesComponent,
+    BatterieComponent,
     PricesComponent,
     SupplieroverviewComponent,
-    NewsupplierComponent
+    NewsupplierComponent,
+    ConsumeroverviewComponent,
+    NewconsumerComponent,
+    BatterieoverviewComponent,
+    NewbatterieComponent
   ],
   imports: [
     BrowserModule,
