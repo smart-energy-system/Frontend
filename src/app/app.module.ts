@@ -13,6 +13,7 @@ import { ConsumerComponent } from './consumer/consumer.component';
 import { BatteriesComponent } from './batteries/batteries.component';
 import { PricesComponent } from './prices/prices.component';
 import { SupplieroverviewComponent } from './supplieroverview/supplieroverview.component';
+import { NewsupplierComponent } from './supplieroverview/newsupplier/newsupplier.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SupplieroverviewComponent } from './supplieroverview/supplieroverview.c
     ConsumerComponent,
     BatteriesComponent,
     PricesComponent,
-    SupplieroverviewComponent
+    SupplieroverviewComponent,
+    NewsupplierComponent
   ],
   imports: [
     BrowserModule,

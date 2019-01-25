@@ -6,6 +6,7 @@ import { ConsumerComponent } from './consumer/consumer.component';
 import { BatteriesComponent } from './batteries/batteries.component';
 import { PricesComponent } from './prices/prices.component';
 import { SupplieroverviewComponent} from './supplieroverview/supplieroverview.component';
+import { NewsupplierComponent } from './supplieroverview/newsupplier/newsupplier.component';
 
 const routes: Routes = [
   {path: '', component: DashboardComponent},
@@ -13,6 +14,9 @@ const routes: Routes = [
   {path: 'supplier',
     component: SupplieroverviewComponent,
     children:[{
+      path: 'new',
+      component: NewsupplierComponent,
+    },{
       path: ':id',
       component: SupplierComponent,
     }]
