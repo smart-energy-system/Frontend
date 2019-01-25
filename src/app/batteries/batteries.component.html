@@ -1,4 +1,28 @@
-<mat-drawer-container class="sidenav">
-  <mat-drawer mode="side" opened>Battery List</mat-drawer>
-  <mat-drawer-content>Main content</mat-drawer-content>
-</mat-drawer-container>
+<div class="page">
+    <mat-nav-list id="sidebar" class="page__sidebar">
+      <mat-list-item class="sidebarelement" *ngFor="let batterie of batteries | keyvalue">
+        <p class="elementleft">
+          batterie
+        </p>
+        <button mat-icon-button>
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+      <mat-list-item class="addelement">
+        <div class="endbutton">
+          <button mat-icon-button>
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
+    <div class="page__content">
+      <div class="content_left">
+        test links
+      </div>
+      <div class="content_right">
+        test rechts
+      </div>
+    </div>
+  </div>
+  

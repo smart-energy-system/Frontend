@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService} from '../data.service'
+import { DataService} from '../data.service';
+
 @Component({
   selector: 'app-supplier',
   templateUrl: './supplier.component.html',
@@ -14,7 +15,7 @@ export class SupplierComponent implements OnInit {
   ngOnInit() {
     this.data.getAllWindturbines().subscribe(data => {
       this.windturbines = data
+      console.log(this.windturbines)
     });
   }
-
 }

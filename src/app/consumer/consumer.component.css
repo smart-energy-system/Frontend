@@ -1,0 +1,49 @@
+.page {
+    display: flex
+  }
+  
+  .page__sidebar {
+    background-color: rgb(235, 235, 235);
+    width: 10%;
+    height: 1000px;
+    color:whitesmoke;
+  }
+    
+  .page__content {
+    flex: 1
+  }
+  
+  .elementright{
+    float: left;
+    width:10%;
+    height:100%;
+    background-color: red;
+  }
+  
+  .sidebarelement{
+    width: 100%;
+    border-bottom: 1px solid;
+    border-color: black;
+  }
+  
+  .elementleft{
+    float: left;
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  .endbutton{
+    width:100%;
+    height:100%;
+    text-align: center;
+  }
+  
+  .content_left{
+    float:left;
+    width: 50%;
+  }
+  
+  .content_right{
+    float: right;
+    width: 50%;
+  }

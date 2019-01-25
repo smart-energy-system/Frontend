@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {MatToolbarModule, MatButtonModule, MatSidenavModule} from '@angular/material';
+import {MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule} from '@angular/material';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { ConsumerComponent } from './consumer/consumer.component';
@@ -31,9 +31,12 @@ import { PricesComponent } from './prices/prices.component';
     //material
     MatToolbarModule,
     MatButtonModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
