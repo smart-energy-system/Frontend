@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ConsumerComponent } from './consumeroverview/consumer/consumer.component';
+import { HomeComponent } from './consumeroverview/home/home.component';
+import { OfficebuildingComponent } from './consumeroverview/officebuilding/officebuilding.component';
 import { BatterieComponent } from './batterieoverview/batterie/batterie.component';
 import { PricesComponent } from './prices/prices.component';
 import { SupplieroverviewComponent} from './supplieroverview/supplieroverview.component';
@@ -35,8 +36,11 @@ const routes: Routes = [
       path: 'new',
       component: NewconsumerComponent,
     },{
-      path: ':id',
-      component: ConsumerComponent,
+      path: 'homes/:id',
+      component: HomeComponent,
+    },{
+      path: 'officeBuildings/:id',
+      component: OfficebuildingComponent,
     }]
   },
   {path: 'batteries', component: BatterieoverviewComponent,

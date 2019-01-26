@@ -8,7 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule} from '@angular/material';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ConsumerComponent } from './consumeroverview/consumer/consumer.component';
 import { BatterieComponent } from './batterieoverview/batterie/batterie.component';
 import { PricesComponent } from './prices/prices.component';
 import { SupplieroverviewComponent } from './supplieroverview/supplieroverview.component';
@@ -19,13 +18,14 @@ import { BatterieoverviewComponent } from './batterieoverview/batterieoverview.c
 import { NewbatterieComponent } from './batterieoverview/newbatterie/newbatterie.component';
 import { WindturbineComponent } from './supplieroverview/windturbine/windturbine.component';
 import { PhotovoltaicpanelComponent } from './supplieroverview/photovoltaicpanel/photovoltaicpanel.component';
+import { HomeComponent } from './consumeroverview/home/home.component';
+import { OfficebuildingComponent } from './consumeroverview/officebuilding/officebuilding.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     DashboardComponent,
-    ConsumerComponent,
     BatterieComponent,
     PricesComponent,
     SupplieroverviewComponent,
@@ -35,7 +35,9 @@ import { PhotovoltaicpanelComponent } from './supplieroverview/photovoltaicpanel
     BatterieoverviewComponent,
     NewbatterieComponent,
     WindturbineComponent,
-    PhotovoltaicpanelComponent
+    PhotovoltaicpanelComponent,
+    HomeComponent,
+    OfficebuildingComponent
   ],
   imports: [
     BrowserModule,

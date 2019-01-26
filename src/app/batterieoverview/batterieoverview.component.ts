@@ -13,7 +13,7 @@ export class BatterieoverviewComponent implements OnInit {
   constructor(private data: DataService, private http: HttpClient) { }
 
   ngOnInit() {
-    this.data.getAllWindturbines().subscribe(data => {
+    this.data.getAllBatteries().subscribe(data => {
       this.batteries = data
     });
   }

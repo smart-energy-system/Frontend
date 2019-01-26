@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService} from '../../data.service';
+import { DataService } from '../../data.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-consumer',
-  templateUrl: './consumer.component.html',
-  styleUrls: ['./consumer.component.css']
+  selector: 'app-officebuilding',
+  templateUrl: './officebuilding.component.html',
+  styleUrls: ['./officebuilding.component.css']
 })
-export class ConsumerComponent implements OnInit {
+export class OfficebuildingComponent implements OnInit {
 
   id: number;
 

@@ -20,6 +20,10 @@ export class DataService {
     return this.http.get("http://localhost:8090/consumer/homes");
   }
 
+  getAllOfficeBuildings(){
+    return this.http.get("http://localhost:8090/consumer/officeBuildings");
+  }
+
   getAllBatteries(){
     return this.http.get("http://localhost:8090/supplier/batteries");
   }
