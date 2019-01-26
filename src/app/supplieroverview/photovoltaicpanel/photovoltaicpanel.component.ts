@@ -3,12 +3,12 @@ import { DataService} from '../../data.service';
 import { ActivatedRoute} from '@angular/router';
 
 @Component({
-  selector: 'app-supplier',
-  templateUrl: './supplier.component.html',
-  styleUrls: ['./supplier.component.css']
+  selector: 'app-photovoltaicpanel',
+  templateUrl: './photovoltaicpanel.component.html',
+  styleUrls: ['./photovoltaicpanel.component.css']
 })
-export class SupplierComponent implements OnInit {
-  
+export class PhotovoltaicpanelComponent implements OnInit {
+
   id: number;
 
   constructor(private data: DataService, private route: ActivatedRoute) { }

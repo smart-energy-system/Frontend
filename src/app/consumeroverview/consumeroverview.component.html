@@ -1,16 +1,16 @@
 <div class="page">
   <mat-nav-list id="sidebar" class="page__sidebar">
     <mat-list-item class="sidebarelement" *ngFor="let home of homes | keyvalue">
-      <p class="elementleft">
+      <p class="elementleft" [routerLink]="['/consumer', home.key]">
         home
       </p>
       <div class="elementright">
-        <button mat-icon-button>
+        <button mat-icon-button (click)="deleteHome(home.key)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
     </mat-list-item>
-    <mat-list-item class="addelement">
+    <mat-list-item class="addelement" [routerLink]="['/consumer/new']">
       <div class="endbutton">
         <button mat-icon-button>
           <mat-icon>add</mat-icon>

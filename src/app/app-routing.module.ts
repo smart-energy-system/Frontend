@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { SupplierComponent } from './supplieroverview/supplier/supplier.component';
 import { ConsumerComponent } from './consumeroverview/consumer/consumer.component';
 import { BatterieComponent } from './batterieoverview/batterie/batterie.component';
 import { PricesComponent } from './prices/prices.component';
@@ -11,6 +10,8 @@ import { NewconsumerComponent } from './consumeroverview/newconsumer/newconsumer
 import { ConsumeroverviewComponent } from './consumeroverview/consumeroverview.component';
 import { BatterieoverviewComponent } from './batterieoverview/batterieoverview.component';
 import { NewbatterieComponent } from './batterieoverview/newbatterie/newbatterie.component';
+import { WindturbineComponent } from './supplieroverview/windturbine/windturbine.component';
+import { PhotovoltaicpanelComponent } from './supplieroverview/photovoltaicpanel/photovoltaicpanel.component';
 
 const routes: Routes = [
   {path: '', component: DashboardComponent},
@@ -21,8 +22,11 @@ const routes: Routes = [
       path: 'new',
       component: NewsupplierComponent,
     },{
-      path: ':id',
-      component: SupplierComponent,
+      path: 'photovoltaicPanels/:id',
+      component: PhotovoltaicpanelComponent,
+    },{
+      path: 'windTurbines/:id',
+      component: WindturbineComponent,
     }]
   },
   {path: 'consumer',
@@ -35,7 +39,7 @@ const routes: Routes = [
       component: ConsumerComponent,
     }]
   },
-  {path: 'batterie', component: BatterieoverviewComponent,
+  {path: 'batteries', component: BatterieoverviewComponent,
     children:[{
       path: 'new',
       component: NewbatterieComponent,

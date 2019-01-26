@@ -4,11 +4,13 @@
       <p class="elementleft">
         batterie
       </p>
+      <div class="elementright">
       <button mat-icon-button>
         <mat-icon>delete</mat-icon>
       </button>
+    </div>
     </mat-list-item>
-    <mat-list-item class="addelement">
+    <mat-list-item class="addelement" [routerLink]="['/batterie/new']">
       <div class="endbutton">
         <button mat-icon-button>
           <mat-icon>add</mat-icon>

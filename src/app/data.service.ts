@@ -12,6 +12,10 @@ export class DataService {
     return this.http.get("http://localhost:8090/supplier/windTurbines");
   }
 
+  getAllPhotovoltaicPanels(){
+    return this.http.get("http://localhost:8090/supplier/photovoltaicPanels");
+  }
+
   getAllHomes(){
     return this.http.get("http://localhost:8090/consumer/homes");
   }
@@ -19,4 +23,5 @@ export class DataService {
   getAllBatteries(){
     return this.http.get("http://localhost:8090/supplier/batteries");
   }
+
 }

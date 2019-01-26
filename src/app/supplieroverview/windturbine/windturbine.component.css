@@ -1,0 +1,9 @@
+.content_left{
+    float:left;
+    width: 50%;
+  }
+  
+  .content_right{
+    float: right;
+    width: 50%;
+  }
