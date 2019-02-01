@@ -1,11 +1,18 @@
 .content_left{
     float:left;
-    width: 50%;
+    width: 40%;
+    height: 100%;
 }
   
 .content_right{
     float: right;
-    width: 50%;
+    width: 40%;
+    height: 100%;
+}
+
+.content_middle{
+    float: left;
+    width: 20%;
     height: 100%;
 }
 

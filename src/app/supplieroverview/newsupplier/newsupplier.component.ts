@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, FormGroupDirective, NgForm, AbstractControl } from '@angular/forms';
-import { HttpClient} from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { latLng, tileLayer } from 'leaflet';
 
 export function numberValidator(control: AbstractControl): { [key:string]: any } | null {
@@ -65,11 +65,16 @@ export class NewsupplierComponent implements OnInit {
       latitude: this.windturbineForm.get('lat').value,
       longitude: this.windturbineForm.get('long').value
     };
-
     let data = JSON.stringify(tempdata);
 
-    this.http.post("http://localhost:8090/supplier/windTurbines", data).subscribe();
-    //"displayname": this.windturbineForm.get('displayname').value,
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+
+    this.http.post("http://localhost:8090/supplier/windTurbines", data, httpOptions).subscribe();
+    window.location.reload();
 
     this.succes = true;
   }
