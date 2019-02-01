@@ -1,8 +1,8 @@
 <div class="content_left">
   <div>
     <mat-radio-group class="switch" [(ngModel)]="show">
-      <mat-radio-button class="switch-button" [value]="'wind'">Windturbine</mat-radio-button>
-      <mat-radio-button class="switch-button" [value]="'solar'">Solarpanel</mat-radio-button>
+      <mat-radio-button class="switch-button" [checked]="show=='wind'" [value]="'wind'">Windturbine</mat-radio-button>
+      <mat-radio-button class="switch-button" [checked]="show=='solar'" [value]="'solar'">Solarpanel</mat-radio-button>
     </mat-radio-group>
   </div>
   <div *ngIf="show=='wind'" class="formcontainer">
@@ -103,6 +103,6 @@
   <button type="button">Export Coordinates to map</button>
 </div>
 <div class="content_right">
-  <div class="map" id="map" leaflet [leafletOptions]="options">
+  <div class="map" id="map" leaflet [leafletOptions]="options" [leafletLayers]="layers" (leafletClick)="onLeafletClick()">
   </div>
 </div>
