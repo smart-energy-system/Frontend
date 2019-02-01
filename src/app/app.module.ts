@@ -20,6 +20,11 @@ import { WindturbineComponent } from './supplieroverview/windturbine/windturbine
 import { PhotovoltaicpanelComponent } from './supplieroverview/photovoltaicpanel/photovoltaicpanel.component';
 import { HomeComponent } from './consumeroverview/home/home.component';
 import { OfficebuildingComponent } from './consumeroverview/officebuilding/officebuilding.component';
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { MatRadioModule} from '@angular/material/radio';
+import { MatInputModule} from '@angular/material/input';
+
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 @NgModule({
   declarations: [
@@ -49,7 +54,12 @@ import { OfficebuildingComponent } from './consumeroverview/officebuilding/offic
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatRadioModule,
+    MatInputModule,
+    LeafletModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
