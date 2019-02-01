@@ -21,8 +21,8 @@ export class NewsupplierComponent implements OnInit {
         attribution: '&copy; OpenStreetMap contributors'
       })
     ],
-    zoom: 7,
-    center: latLng([ 46.879966, -121.726909 ])
+    zoom: 6,
+    center: latLng([ 50, 11 ])
   };
 
   windturbineForm: FormGroup;
