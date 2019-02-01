@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, FormGroupDirective, NgForm, AbstractControl } from '@angular/forms';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
-import { latLng, tileLayer } from 'leaflet';
+import { latLng, tileLayer, marker, icon } from 'leaflet';
 
 export function numberValidator(control: AbstractControl): { [key:string]: any } | null {
   const valid = /^\d+$/.test(control.value);
@@ -30,6 +30,7 @@ export class NewsupplierComponent implements OnInit {
   show:string;
   submitted = false;
   succes = false;
+  layers;
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {
     this.windturbineForm = this.formBuilder.group({
@@ -74,8 +75,6 @@ export class NewsupplierComponent implements OnInit {
     };
 
     this.http.post("http://localhost:8090/supplier/windTurbines", data, httpOptions).subscribe();
-    window.location.reload();
-
     this.succes = true;
   }
 
@@ -89,6 +88,25 @@ export class NewsupplierComponent implements OnInit {
     }
 
     this.succes = true;
+  }
+
+  onLeafletClick(event){
+    console.log(event.latlng);
+    this.layers = [marker(event.latlng,{icon: icon({
+        iconSize: [25, 41],
+        iconAnchor: [13, 41],
+        iconUrl: 'leaflet/marker-icon.png',
+        shadowUrl: 'leaflet/marker-shadow.png'
+      })
+    })];
+  }
+
+  onExport(){
+
+  }
+
+  onImport(){
+
   }
 
   ngOnInit() {
