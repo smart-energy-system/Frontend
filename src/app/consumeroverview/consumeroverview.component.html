@@ -1,9 +1,9 @@
 <div class="page">
   <mat-nav-list id="sidebar" class="page__sidebar">
     <mat-list-item class="sidebarelement" *ngFor="let home of homes | keyvalue">
-      <p class="elementleft" [routerLink]="['/consumer/homes', home.key]">
-        home
-      </p>
+      <div class="elementleft" [routerLink]="['/consumer/homes', home.key]">
+        {{homes[home.key]['displayName']}}
+      </div>
       <div class="elementright">
         <button mat-icon-button (click)="deleteHome(home.key)">
           <mat-icon>delete</mat-icon>
@@ -11,11 +11,11 @@
       </div>
     </mat-list-item>
     <mat-list-item class="sidebarelement" *ngFor="let officebuilding of officebuildings | keyvalue">
-      <p class="elementleft" [routerLink]="['/consumer/officeBuildings', officebuilding.key]">
-        officebuilding
-      </p>
+      <div class="elementleft" [routerLink]="['/consumer/officeBuildings', officebuilding.key]">
+        {{officebuildings[officebuilding.key]['displayName']}}
+      </div>
       <div class="elementright">
-        <button mat-icon-button (click)="deleteOffcieBuilding(officebuilding.key)">
+        <button mat-icon-button (click)="deleteOfficeBuilding(officebuilding.key)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
