@@ -1,6 +1,58 @@
 <div class="content_left">
-  <h1>{{id}}</h1>
+  <form [formGroup]="homeForm" (ngSubmit)="onSubmitHome()">
+
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Displayname" type="text" formControlName="displayname" [errorStateMatcher]="matcher">
+      <mat-error *ngIf="homeForm.controls.displayname.invalid && homeForm.controls.displayname.errors.required">
+        A displayname is required!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Longitude in degrees" type="number" formControlName="long">
+      <mat-error *ngIf="homeForm.controls.long.invalid && homeForm.controls.long.errors.required">
+        A longitude is required!
+      </mat-error>
+      <mat-error *ngIf="homeForm.controls.long.invalid && !homeForm.controls.long.errors.required && homeForm.controls.long.errors.invalidNumber">
+        Longitude has to be a number
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Latitude in degrees" type="number" formControlName="lat">
+      <mat-error *ngIf="homeForm.controls.lat.invalid && homeForm.controls.lat.errors.required">
+        A latitude is required!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Average daily occupancy" type="number" formControlName="averageDailyOccupancy">
+      <mat-error *ngIf="homeForm.controls.averageDailyOccupancy.invalid && homeForm.controls.averageDailyOccupancy.errors.required">
+        A average daily occupancy is required!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Demand flexibility" type="number" formControlName="demandFlexibility">
+      <mat-error *ngIf="homeForm.controls.demandFlexibility.invalid && homeForm.controls.demandFlexibility.errors.required">
+        A demand flexibility is required!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Floor area size" type="number" formControlName="floorAreaSize">
+      <mat-error *ngIf="homeForm.controls.floorAreaSize.invalid && homeForm.controls.floorAreaSize.errors.required">
+        A floor area size is required!
+      </mat-error>
+    </mat-form-field>
+
+    <input type="submit" ng-click="onSubmitHome()" value="Update" class="cta">
+  </form>
+</div>
+<div class="content_middle">
+  <button mat-button type="button">Import Coordinates from map</button>
+  <button mat-button type="button" ng-click="onExport();">Export Coordinates to map</button>
 </div>
 <div class="content_right">
-  test rechts
+  <div class="map" id="map" leaflet [leafletOptions]="options" [leafletLayers]="layers" (leafletClick)="onLeafletClick($event)">
 </div>

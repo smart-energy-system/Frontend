@@ -53,6 +53,7 @@ export class WindturbineComponent implements OnInit {
     }
 
     let tempdata = {
+      displayName: this.windturbineForm.get('displayname').value,
       bladeRadius: this.windturbineForm.get('bladeRadius').value,
       efficiency: this.windturbineForm.get('efficiency').value,
       latitude: this.windturbineForm.get('lat').value,
