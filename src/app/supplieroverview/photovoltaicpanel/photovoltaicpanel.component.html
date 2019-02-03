@@ -1,6 +1,55 @@
 <div class="content_left">
-  <h1>{{id}}</h1>
+<form [formGroup]="solarpanelForm" (ngSubmit)="onSubmitUpdate()">
+
+  <mat-form-field class="field-full-width">
+    <input matInput placeholder="Displayname" type="text" formControlName="displayname">
+    <mat-error *ngIf="solarpanelForm.controls.displayname.invalid && solarpanelForm.controls.displayname.errors.required">
+      A displayname is required!
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="field-full-width">
+    <input matInput placeholder="Longitude in degrees" type="number" formControlName="long">
+    <mat-error *ngIf="solarpanelForm.controls.long.invalid && solarpanelForm.controls.long.errors.required">
+      A longitude is required!
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="field-full-width">
+    <input matInput placeholder="Latitude in degrees" type="number" formControlName="lat">
+    <mat-error *ngIf="solarpanelForm.controls.lat.invalid && solarpanelForm.controls.lat.errors.required">
+      A latitude is required!
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="field-full-width">
+    <input matInput placeholder="Maximum Power Yield in Watts" type="number" formControlName="maximumPowerYield">
+    <mat-error *ngIf="solarpanelForm.controls.maximumPowerYield.invalid && solarpanelForm.controls.maximumPowerYield.errors.required">
+      A maximum power yield is required!
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="field-full-width">
+    <input matInput placeholder="Module Area in squaremeters" type="number" formControlName="moduleArea">
+    <mat-error *ngIf="solarpanelForm.controls.moduleArea.invalid && solarpanelForm.controls.moduleArea.errors.required">
+      A module area is required!
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="field-full-width">
+    <input matInput placeholder="Tilt Angle in degrees" type="number" formControlName="tiltAngle">
+    <mat-error *ngIf="solarpanelForm.controls.tiltAngle.invalid && solarpanelForm.controls.tiltAngle.errors.required">
+      A tilt angle is required!
+    </mat-error>
+  </mat-form-field>
+
+  <input type="submit" ng-click="onSubmitUpdate();" value="Update" class="cta">
+</form>
+</div>
+<div class="content_middle">
+  <button mat-button type="button">Import Coordinates from map</button>
+  <button mat-button type="button" ng-click="onExport();">Export Coordinates to map</button>
 </div>
 <div class="content_right">
-  test rechts
+  <div class="map" id="map" leaflet [leafletOptions]="options" [leafletLayers]="layers" (leafletClick)="onLeafletClick($event)">
 </div>

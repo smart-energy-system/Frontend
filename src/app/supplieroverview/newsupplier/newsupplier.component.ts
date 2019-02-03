@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl, FormGroupDirective, NgForm, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { latLng, tileLayer, marker, icon } from 'leaflet';
-
-export function numberValidator(control: AbstractControl): { [key:string]: any } | null {
-  const valid = /^\d+$/.test(control.value);
-  return valid ? null : { invalidNumber: { valid: false, value: control.value}};
-}
 
 @Component({
   selector: 'app-newsupplier',
@@ -29,7 +24,7 @@ export class NewsupplierComponent implements OnInit {
   solarpanelForm: FormGroup;
   show:string;
   submitted = false;
-  succes = false;
+  success = false;
   layers;
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {
@@ -49,18 +44,18 @@ export class NewsupplierComponent implements OnInit {
       tiltAngle: ['', Validators.required]
     });
   }
+
   onSubmitWindturbine(){
     this.submitted = true;
-    
+
     console.log("windturbine clicked!");
 
     if(this.windturbineForm.invalid){
       return;
     }
 
-    console.log(this.windturbineForm.get('efficiency').value);
-
     let tempdata = {
+      displayName: this.windturbineForm.get('displayname').value,
       bladeRadius: this.windturbineForm.get('bladeRadius').value,
       efficiency: this.windturbineForm.get('efficiency').value,
       latitude: this.windturbineForm.get('lat').value,
@@ -75,7 +70,7 @@ export class NewsupplierComponent implements OnInit {
     };
 
     this.http.post("http://localhost:8090/supplier/windTurbines", data, httpOptions).subscribe();
-    this.succes = true;
+    this.success = true;
   }
 
   onSubmitSolarpanel(){
@@ -87,7 +82,24 @@ export class NewsupplierComponent implements OnInit {
       return;
     }
 
-    this.succes = true;
+    let tempdata = {
+      displayName: this.solarpanelForm.get('displayname').value,
+      lat: this.solarpanelForm.get('lat').value,
+      long: this.solarpanelForm.get('long').value,
+      maximumPowerYield: this.solarpanelForm.get('maximumPowerYield').value,
+      moduleArea: this.solarpanelForm.get('moduleArea').value,
+      tiltAngle: this.solarpanelForm.get('tiltAngle').value
+    };
+    let data = JSON.stringify(tempdata);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+
+    this.http.post("http://localhost:8090/supplier/photovoltaicPanels", data, httpOptions).subscribe();
+    this.success = true;
   }
 
   onLeafletClick(event){
@@ -102,7 +114,15 @@ export class NewsupplierComponent implements OnInit {
   }
 
   onExport(){
-
+    console.log("test");
+/**    this.layers = [marker([this.windturbineForm.get('lat').value , this.windturbineForm.get('long').value],{icon: icon({
+        iconSize: [25, 41],
+        iconAnchor: [13, 41],
+        iconUrl: 'leaflet/marker-icon.png',
+        shadowUrl: 'leaflet/marker-shadow.png'
+      })
+    })];
+*/
   }
 
   onImport(){

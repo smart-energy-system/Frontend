@@ -1,6 +1,51 @@
 <div class="content_left">
-  <h1>{{id}}</h1>
+    <form [formGroup]="windturbineForm" (ngSubmit)="onSubmitUpdate()">
+
+        <mat-form-field class="field-full-width">
+          <input matInput placeholder="Displayname" type="text" formControlName="displayname" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="windturbineForm.controls.displayname.invalid && windturbineForm.controls.displayname.errors.required">
+            A displayname is required!
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="field-full-width">
+          <input matInput placeholder="Longitude in degrees" type="number" formControlName="long">
+          <mat-error *ngIf="windturbineForm.controls.long.invalid && windturbineForm.controls.long.errors.required">
+            A longitude is required!
+          </mat-error>
+          <mat-error *ngIf="windturbineForm.controls.long.invalid && !windturbineForm.controls.long.errors.required && windturbineForm.controls.long.errors.invalidNumber">
+            Longitude has to be a number
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="field-full-width">
+          <input matInput placeholder="Latitude in degrees" type="number" formControlName="lat">
+          <mat-error *ngIf="windturbineForm.controls.lat.invalid && windturbineForm.controls.lat.errors.required">
+            A latitude is required!
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="field-full-width">
+          <input matInput placeholder="Blade Radius" type="number" formControlName="bladeRadius">
+          <mat-error *ngIf="windturbineForm.controls.bladeRadius.invalid && windturbineForm.controls.bladeRadius.errors.required">
+            A bladeradius is required!
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="field-full-width">
+          <input matInput placeholder="Efficiency" type="number" formControlName="efficiency">
+          <mat-error *ngIf="windturbineForm.controls.efficiency.invalid && windturbineForm.controls.efficiency.errors.required">
+            A efficiency is required!
+          </mat-error>
+        </mat-form-field>
+  
+        <input type="submit" ng-click="onSubmitUpdate()" value="Update" class="cta">
+      </form>  
 </div>
-<div class="content_right">
-  test rechts
-</div>
+  <div class="content_middle">
+    <button mat-button type="button">Import Coordinates from map</button>
+    <button mat-button type="button" ng-click="onExport();">Export Coordinates to map</button>
+  </div>
+  <div class="content_right">
+    <div class="map" id="map" leaflet [leafletOptions]="options" [leafletLayers]="layers" (leafletClick)="onLeafletClick($event)">
+  </div>
