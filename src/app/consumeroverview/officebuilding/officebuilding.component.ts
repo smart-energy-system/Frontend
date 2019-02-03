@@ -69,7 +69,7 @@ export class OfficebuildingComponent implements OnInit {
       })
     };
 
-    this.http.put("http://localhost:8090/consumer/officeBuildings", data, httpOptions).subscribe();
+    this.http.put("http://localhost:8090/consumer/officeBuildings/" + this.id, data, httpOptions).subscribe();
     this.success = true;
   }
 

@@ -67,7 +67,7 @@ export class WindturbineComponent implements OnInit {
       })
     };
 
-    this.http.put("http://localhost:8090/supplier/windTurbines", data, httpOptions).subscribe();
+    this.http.put("http://localhost:8090/supplier/windTurbines/" + this.id, data, httpOptions).subscribe();
     this.success = true;
   }
 

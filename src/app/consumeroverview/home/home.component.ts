@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit {
       })
     };
 
-    this.http.put("http://localhost:8090/consumer/homes", data, httpOptions).subscribe();
+    this.http.put("http://localhost:8090/consumer/homes/" + this.id, data, httpOptions).subscribe();
     this.success = true;
   }
 
