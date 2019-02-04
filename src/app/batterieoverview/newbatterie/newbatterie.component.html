@@ -1,4 +1,4 @@
-<div class="full-page">
+<div class="content_left">
   <form [formGroup]="batterieForm" (ngSubmit)="onSubmitBatterie()">
 
     <mat-form-field class="field-full-width">
@@ -9,23 +9,47 @@
     </mat-form-field>
     
     <mat-form-field class="field-full-width">
-      <input matInput placeholder="Charging rate" type="number" formControlName="chargingRate">
-      <mat-error *ngIf="batterieForm.controls.chargingRate.invalid && batterieForm.controls.chargingRate.errors.required">
-        A charging rate is required!
+      <input matInput placeholder="Longitude in degrees" type="number" formControlName="long">
+      <mat-error *ngIf="batterieForm.controls.long.invalid && batterieForm.controls.long.errors.required">
+        A longitude is required!
+      </mat-error>
+      <mat-error *ngIf="batterieForm.controls.long.invalid && !batterieForm.controls.long.errors.required && batterieForm.controls.long.errors.invalidNumber">
+        Longitude has to be a number
       </mat-error>
     </mat-form-field>
 
     <mat-form-field class="field-full-width">
-      <input matInput placeholder="Discharging rate" type="number" formControlName="dischargingRate">
-      <mat-error *ngIf="batterieForm.controls.dischargingRate.invalid && batterieForm.controls.dischargingRate.errors.required">
-        A discharging rate is required!
+      <input matInput placeholder="Latitude in degrees" type="number" formControlName="lat">
+      <mat-error *ngIf="batterieForm.controls.lat.invalid && batterieForm.controls.lat.errors.required">
+        A latitude is required!
       </mat-error>
     </mat-form-field>
 
     <mat-form-field class="field-full-width">
-      <input matInput placeholder="Efficiency" type="number" formControlName="efficiency">
-      <mat-error *ngIf="batterieForm.controls.efficiency.invalid && batterieForm.controls.efficiency.errors.required">
+      <input matInput placeholder="Maximum charging rate" type="number" formControlName="maximumChargingRate">
+      <mat-error *ngIf="batterieForm.controls.maximumChargingRate.invalid && batterieForm.controls.maximumChargingRate.errors.required">
+        A maximum charging rate is required!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Maximum discharging rate" type="number" formControlName="maximumDischargingRate">
+      <mat-error *ngIf="batterieForm.controls.maximumDischargingRate.invalid && batterieForm.controls.maximumDischargingRate.errors.required">
+        A maximum discharging rate is required!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Charging efficiency" type="number" formControlName="chargingEfficiency">
+      <mat-error *ngIf="batterieForm.controls.chargingEfficiency.invalid && batterieForm.controls.chargingEfficiency.errors.required">
         A efficiency is required!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Maximum stored energy" type="number" formControlName="maximumStoredEnergy">
+      <mat-error *ngIf="batterieForm.controls.maximumStoredEnergy.invalid && batterieForm.controls.maximumStoredEnergy.errors.required">
+        A maximum stored energy is required!
       </mat-error>
     </mat-form-field>
 
@@ -38,4 +62,12 @@
 
     <input type="submit" ng-click="onSubmitBatterie()" value="Create" class="cta">
   </form>
+</div>
+<div class="content_middle">
+  <button mat-button type="button" (click)="onImport()">Import Coordinates from map</button>
+  <button mat-button type="button" (click)="onExport()">Export Coordinates to map</button>
+</div>
+<div class="content_right">
+  <div class="map" id="map" leaflet [leafletOptions]="options" [leafletLayers]="layers" (leafletClick)="onLeafletClick($event)">
+</div>
 </div>

@@ -20,8 +20,10 @@ export class BatterieoverviewComponent implements OnInit {
   }
 
   deleteBatterie(id){
-    this.http.delete("http://localhost:8090/supplier/batteries/{id}");
-    window.location.reload();
+    this.http.delete("http://localhost:8090/supplier/batteries/"+ id).subscribe();
+    this.data.getAllBatteries().subscribe(data => {
+      this.batteries = data
+    });
   }
 
 }
