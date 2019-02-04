@@ -10,8 +10,6 @@ import { latLng, tileLayer, marker, icon } from 'leaflet';
 })
 export class NewsupplierComponent implements OnInit {
 
-  @Input() newCallback: (newObject: any) => void;
-
   options = {
     layers: [
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
