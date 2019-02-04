@@ -1,3 +1,41 @@
-<p>
-  newbatterie works!
-</p>
+<div class="full-page">
+  <form [formGroup]="batterieForm" (ngSubmit)="onSubmitBatterie()">
+
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Displayname" type="text" formControlName="displayname" [errorStateMatcher]="matcher">
+      <mat-error *ngIf="batterieForm.controls.displayname.invalid && batterieForm.controls.displayname.errors.required">
+        A displayname is required!
+      </mat-error>
+    </mat-form-field>
+    
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Charging rate" type="number" formControlName="chargingRate">
+      <mat-error *ngIf="batterieForm.controls.chargingRate.invalid && batterieForm.controls.chargingRate.errors.required">
+        A charging rate is required!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Discharging rate" type="number" formControlName="dischargingRate">
+      <mat-error *ngIf="batterieForm.controls.dischargingRate.invalid && batterieForm.controls.dischargingRate.errors.required">
+        A discharging rate is required!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Efficiency" type="number" formControlName="efficiency">
+      <mat-error *ngIf="batterieForm.controls.efficiency.invalid && batterieForm.controls.efficiency.errors.required">
+        A efficiency is required!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-full-width">
+      <input matInput placeholder="Stored energy" type="number" formControlName="storedEnergy">
+      <mat-error *ngIf="batterieForm.controls.storedEnergy.invalid && batterieForm.controls.storedEnergy.errors.required">
+        A stored energy is required!
+      </mat-error>
+    </mat-form-field>
+
+    <input type="submit" ng-click="onSubmitBatterie()" value="Create" class="cta">
+  </form>
+</div>
