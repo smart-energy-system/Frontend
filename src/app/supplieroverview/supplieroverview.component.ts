@@ -14,6 +14,10 @@ export class SupplieroverviewComponent implements OnInit {
 
   constructor(private data: DataService, private http: HttpClient) { }
 
+  newCallback = (newObject) => {
+    console.log(newObject);
+  }
+
   ngOnInit() {
     this.data.getAllWindturbines().subscribe(data => {
       this.windturbines = data;

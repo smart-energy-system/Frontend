@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { latLng, tileLayer, marker, icon } from 'leaflet';
@@ -9,6 +9,8 @@ import { latLng, tileLayer, marker, icon } from 'leaflet';
   styleUrls: ['./newsupplier.component.css']
 })
 export class NewsupplierComponent implements OnInit {
+
+  @Input() newCallback: (newObject: any) => void;
 
   options = {
     layers: [
@@ -103,7 +105,6 @@ export class NewsupplierComponent implements OnInit {
   }
 
   onLeafletClick(event){
-    console.log(event.latlng);
     this.layers = [marker(event.latlng,{icon: icon({
         iconSize: [25, 41],
         iconAnchor: [13, 41],
@@ -114,19 +115,33 @@ export class NewsupplierComponent implements OnInit {
   }
 
   onExport(){
-    console.log("test");
-/**    this.layers = [marker([this.windturbineForm.get('lat').value , this.windturbineForm.get('long').value],{icon: icon({
+    if(this.show == 'wind'){
+      this.layers = [marker([this.windturbineForm.get('lat').value , this.windturbineForm.get('long').value],{icon: icon({
         iconSize: [25, 41],
         iconAnchor: [13, 41],
         iconUrl: 'leaflet/marker-icon.png',
         shadowUrl: 'leaflet/marker-shadow.png'
-      })
-    })];
-*/
+        })
+      })];
+    }else{
+      this.layers = [marker([this.solarpanelForm.get('lat').value , this.solarpanelForm.get('long').value],{icon: icon({
+        iconSize: [25, 41],
+        iconAnchor: [13, 41],
+        iconUrl: 'leaflet/marker-icon.png',
+        shadowUrl: 'leaflet/marker-shadow.png'
+        })
+      })];
+    }
   }
 
   onImport(){
-
+    if(this.show == 'wind'){
+      this.windturbineForm.controls['lat'].setValue(this.layers[0].getLatLng()['lat']);
+      this.windturbineForm.controls['long'].setValue(this.layers[0].getLatLng()['lng']);
+    }else{
+      this.solarpanelForm.controls['lat'].setValue(this.layers[0].getLatLng()['lat']);
+      this.solarpanelForm.controls['long'].setValue(this.layers[0].getLatLng()['lng']);
+    }
   }
 
   ngOnInit() {

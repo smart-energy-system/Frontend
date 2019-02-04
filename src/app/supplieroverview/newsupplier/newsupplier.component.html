@@ -99,8 +99,8 @@
   </div>
 </div>
 <div class="content_middle">
-  <button mat-button type="button">Import Coordinates from map</button>
-  <button mat-button type="button" ng-click="onExport();">Export Coordinates to map</button>
+  <button mat-button type="button" (click)="onImport()">Import Coordinates from map</button>
+  <button mat-button type="button" (click)="onExport()">Export Coordinates to map</button>
 </div>
 <div class="content_right">
   <div class="map" id="map" leaflet [leafletOptions]="options" [leafletLayers]="layers" (leafletClick)="onLeafletClick($event)">
