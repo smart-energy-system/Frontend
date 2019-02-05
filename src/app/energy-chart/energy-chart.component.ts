@@ -19,10 +19,10 @@ export class EnergyChartComponent implements OnInit {
     this.onClickMe();
   }
 
-  getForecast() : void{
-    this.forecastService.getForecast(1,86400000)
-    .subscribe(forecast => this.forecast = forecast);
-  }
+  // getForecast() : void{
+  //   this.forecastService.getForecast(1,86400000)
+  //   .subscribe(forecast => this.forecast = forecast);
+  // }
 
   onInit(){
     this.initChart();
@@ -43,26 +43,21 @@ export class EnergyChartComponent implements OnInit {
       return "rgb(" + r + "," + g + "," + b + ")";
   }
 
-  onClickMe() {
-    console.log("bLub");
-    console.log(this.forecast);
-    let ids : string[];
-    ids = [];
-    this.chartDataSet = {
-      datasets: []
-    };
-    this.forecastService.getAllIds("photovoltaicPanels").subscribe(entityList => entityList.forEach(entry =>
+  
+
+  getDatePerType(type:string, entitiytype : string){
+    this.forecastService.getAllIds(type,entitiytype).subscribe(entityList => entityList.forEach(entry =>
       {
         //Request for each id
         console.log(entry.id);
-        ids.push(entry.id);
-        this.forecastService.getForecast(entry.id,86400000).subscribe(forecast =>
+        //ids.push(entry.id);
+        this.forecastService.getForecast(entry.id,86400000,type,entitiytype).subscribe(forecast =>
           {
           //Add data to chart
           console.log("Get data for:"+ entry.id)
           let data = { 
             data: [],
-            label: "Photovoltaic Panel " + entry.id,
+            label: entitiytype + entry.id,
             borderColor: this.randomColor(),
             fill: false
           };
@@ -71,7 +66,22 @@ export class EnergyChartComponent implements OnInit {
           this.initOrUpdateChart();
         });
     }));
+  }
 
+  onClickMe() {
+    console.log("bLub");
+    console.log(this.forecast);
+    let ids : string[];
+    ids = [];
+    this.chartDataSet = {
+      datasets: []
+    };
+
+    this.getDatePerType("supplier","photovoltaicPanels");
+    this.getDatePerType("supplier","windTurbines");
+
+    this.getDatePerType("consumer","homes");
+    this.getDatePerType("consumer","officeBuildings");
     // this.chartDataSet.datasets.push({ 
     //   data: [86,114,106,106,107,111,133,221,783,2478],
     //   label: "Africa",
@@ -87,6 +97,27 @@ export class EnergyChartComponent implements OnInit {
     // };
     // this.forecast.forecast.forEach(forecastEntity => data.data.push({ x: forecastEntity.timestamp, y: forecastEntity.value}))
     // this.chartDataSet.datasets.push(data);
+  }
+
+  toogleLogScale(){
+    if(this.chart.options.scales.yAxes[0].type ==='linear'){
+      this.chart.options.scales.yAxes[0] = {
+        type: 'logarithmic',
+        scaleLabel: {
+          display: true,
+          labelString: 'Unit: W'
+        }
+      }
+    }else{
+      this.chart.options.scales.yAxes[0] = {
+        type: 'linear',
+        scaleLabel: {
+          display: true,
+          labelString: 'Unit: W'
+        }
+      }
+    }
+  this.chart.update();
   }
 
   initChart(){
@@ -116,6 +147,7 @@ export class EnergyChartComponent implements OnInit {
           }
         }],
         yAxes: [{
+          type: 'linear',
           scaleLabel: {
             display: true,
             labelString: 'Unit: W'

@@ -9,20 +9,27 @@ import { EnergyForecast } from './energyForecast';
 })
 export class ForecastService {
 
-  private forecastUrl = 'http://localhost:8090/supplier/photovoltaicPanels/${id}/energyOutputForecast?maxTimestampOffset=&{maxTimestampOffset}';
+  //private forecastUrl = 'http://localhost:8090/supplier/photovoltaicPanels/${id}/energyOutputForecast?maxTimestampOffset=&{maxTimestampOffset}';
 
   constructor(private _http: HttpClient) { }
 
-  getForecast(id: number, maxTimestampOffset: number) {
-    return this._http.get<EnergyForecast>('http://localhost:8090/supplier/photovoltaicPanels/'+ id + '/energyOutputForecast?maxTimestampOffset='+maxTimestampOffset) .pipe(
+  getForecast(id: number, maxTimestampOffset: number, type: string, entitiyType : string ) {
+    let forecastType ="";
+    if(type === "supplier"){
+      forecastType = "energyOutputForecast";
+    }
+    if(type === "consumer"){
+      forecastType = "demandForecast";
+    }
+    return this._http.get<EnergyForecast>('http://localhost:8090/'+type+'/'+ entitiyType+ '/'+ id + '/'+forecastType+'?maxTimestampOffset='+maxTimestampOffset) .pipe(
       map(forecastResponse => (forecastResponse as any)),
       tap(result => console.log('fetched result:'+ result)),
       catchError(this.handleError("Get forecast",[]))
     );
   }
 
-  getAllIds(type : string){
-    let observable =  this._http.get("http://localhost:8090/supplier/"+type).pipe(
+  getAllIds(type : string, entitiyType : string){
+    let observable =  this._http.get("http://localhost:8090/"+ type+ "/"+entitiyType).pipe(
       map(entityList => (entityList as any)),
       tap(_ => console.log('fetched result')),
       catchError(this.handleError("Get all "+type,[]))
