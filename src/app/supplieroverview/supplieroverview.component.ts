@@ -24,12 +24,16 @@ export class SupplieroverviewComponent implements OnInit {
   }
 
   deleteWindTurbine(id){
-    this.http.delete("http://localhost:8090/supplier/windTurbines/{id}");
-    window.location.reload();
+    this.http.delete("http://localhost:8090/supplier/windTurbines/" + id).subscribe();
+    this.data.getAllWindturbines().subscribe(data => {
+      this.windturbines = data;
+    });
   }
 
   deletePhotovoltaicPanel(id){
-    this.http.delete("http://localhost:8090/supplier/photovoltaicPanels/{id}");
-    window.location.reload();
+    this.http.delete("http://localhost:8090/supplier/photovoltaicPanels/" + id).subscribe();
+    this.data.getAllPhotovoltaicPanels().subscribe(data => {
+      this.photovoltaicPanels = data;
+    });
   }
 }

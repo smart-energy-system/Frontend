@@ -2,7 +2,7 @@
   <mat-nav-list id="sidebar" class="page__sidebar">
     <mat-list-item class="sidebarelement" *ngFor="let batterie of batteries | keyvalue">
       <div class="elementleft" [routerLink]="['/batteries', batterie.key]">
-        batterie {{batterie.key}}
+        {{batteries[batterie.key]['displayName']}}
       </div>
       <div class="elementright" (click)="deleteBatterie(batterie.key)">
       <button mat-icon-button>

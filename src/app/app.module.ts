@@ -21,6 +21,10 @@ import { PhotovoltaicpanelComponent } from './supplieroverview/photovoltaicpanel
 import { HomeComponent } from './consumeroverview/home/home.component';
 import { OfficebuildingComponent } from './consumeroverview/officebuilding/officebuilding.component';
 import { EnergyChartComponent } from './energy-chart/energy-chart.component';
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { MatRadioModule} from '@angular/material/radio';
+import { MatInputModule} from '@angular/material/input';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 @NgModule({
   declarations: [
@@ -51,7 +55,12 @@ import { EnergyChartComponent } from './energy-chart/energy-chart.component';
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatRadioModule,
+    MatInputModule,
+    LeafletModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

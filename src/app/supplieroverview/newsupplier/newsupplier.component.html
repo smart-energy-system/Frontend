@@ -1,3 +1,108 @@
-<p>
-  newsupplier works!
-</p>
+<div class="content_left">
+  <div>
+    <mat-radio-group class="switch" [(ngModel)]="show">
+      <mat-radio-button class="switch-button" [checked]="show=='wind'" [value]="'wind'">Windturbine</mat-radio-button>
+      <mat-radio-button class="switch-button" [checked]="show=='solar'" [value]="'solar'">Solarpanel</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div *ngIf="show=='wind'" class="formcontainer">
+    <form [formGroup]="windturbineForm" (ngSubmit)="onSubmitWindturbine()">
+
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Displayname" type="text" formControlName="displayname" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="windturbineForm.controls.displayname.invalid && windturbineForm.controls.displayname.errors.required">
+          A displayname is required!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Longitude in degrees" type="number" formControlName="long">
+        <mat-error *ngIf="windturbineForm.controls.long.invalid && windturbineForm.controls.long.errors.required">
+          A longitude is required!
+        </mat-error>
+        <mat-error *ngIf="windturbineForm.controls.long.invalid && !windturbineForm.controls.long.errors.required && windturbineForm.controls.long.errors.invalidNumber">
+          Longitude has to be a number
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Latitude in degrees" type="number" formControlName="lat">
+        <mat-error *ngIf="windturbineForm.controls.lat.invalid && windturbineForm.controls.lat.errors.required">
+          A latitude is required!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Blade Radius" type="number" formControlName="bladeRadius">
+        <mat-error *ngIf="windturbineForm.controls.bladeRadius.invalid && windturbineForm.controls.bladeRadius.errors.required">
+          A bladeradius is required!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Efficiency" type="number" formControlName="efficiency">
+        <mat-error *ngIf="windturbineForm.controls.efficiency.invalid && windturbineForm.controls.efficiency.errors.required">
+          A efficiency is required!
+        </mat-error>
+      </mat-form-field>
+
+      <input type="submit" ng-click="onSubmitWindturbine()" value="Create" class="cta">
+    </form>
+  </div>
+  <div *ngIf="show=='solar'" class="formcontainer">
+    <form [formGroup]="solarpanelForm" (ngSubmit)="onSubmitSolarpanel()">
+
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Displayname" type="text" formControlName="displayname">
+        <mat-error *ngIf="solarpanelForm.controls.displayname.invalid && solarpanelForm.controls.displayname.errors.required">
+          A displayname is required!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Longitude in degrees" type="number" formControlName="long">
+        <mat-error *ngIf="solarpanelForm.controls.long.invalid && solarpanelForm.controls.long.errors.required">
+          A longitude is required!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Latitude in degrees" type="number" formControlName="lat">
+        <mat-error *ngIf="solarpanelForm.controls.lat.invalid && solarpanelForm.controls.lat.errors.required">
+          A latitude is required!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Maximum Power Yield in Watts" type="number" formControlName="maximumPowerYield">
+        <mat-error *ngIf="solarpanelForm.controls.maximumPowerYield.invalid && solarpanelForm.controls.maximumPowerYield.errors.required">
+          A maximum power yield is required!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Module Area in squaremeters" type="number" formControlName="moduleArea">
+        <mat-error *ngIf="solarpanelForm.controls.moduleArea.invalid && solarpanelForm.controls.moduleArea.errors.required">
+          A module area is required!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Tilt Angle in degrees" type="number" formControlName="tiltAngle">
+        <mat-error *ngIf="solarpanelForm.controls.tiltAngle.invalid && solarpanelForm.controls.tiltAngle.errors.required">
+          A tilt angle is required!
+        </mat-error>
+      </mat-form-field>
+
+      <input type="submit" ng-click="onSubmitSolarpanel();" value="Create" class="cta">
+    </form>
+  </div>
+</div>
+<div class="content_middle">
+  <button mat-button type="button" (click)="onImport()">Import Coordinates from map</button>
+  <button mat-button type="button" (click)="onExport()">Export Coordinates to map</button>
+</div>
+<div class="content_right">
+  <div class="map" id="map" leaflet [leafletOptions]="options" [leafletLayers]="layers" (leafletClick)="onLeafletClick($event)">
+</div>
+</div>

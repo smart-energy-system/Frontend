@@ -2,7 +2,7 @@
     <mat-nav-list id="sidebar" class="page__sidebar">
       <mat-list-item class="sidebarelement" *ngFor="let windturbine of windturbines | keyvalue">
         <div class="elementleft" [routerLink]="['/supplier/windTurbines', windturbine.key]">
-          windturbine {{windturbine.key}}
+          {{windturbines[windturbine.key]['displayName']}}
         </div>
         <div class="elementright">
           <button mat-icon-button (click)="deleteWindTurbine(windturbine.key)">
@@ -12,7 +12,7 @@
       </mat-list-item>
       <mat-list-item class="sidebarelement" *ngFor="let photovoltaicPanel of photovoltaicPanels | keyvalue">
         <div class="elementleft" [routerLink]="['/supplier/photovoltaicPanels', photovoltaicPanel.key]">
-          photovoltaicPanel {{photovoltaicPanel.key}}
+          {{photovoltaicPanels[photovoltaicPanel.key]['displayName']}}
         </div>
         <div class="elementright">
           <button mat-icon-button (click)="deletePhotovoltaicPanel(photovoltaicPanel.key)">
