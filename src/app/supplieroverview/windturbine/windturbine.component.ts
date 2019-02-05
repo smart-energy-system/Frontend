@@ -90,4 +90,19 @@ export class WindturbineComponent implements OnInit {
       })
     })];
   }
+
+  onExport(){
+    this.layers = [marker([this.windturbineForm.get('lat').value , this.windturbineForm.get('long').value],{icon: icon({
+      iconSize: [25, 41],
+      iconAnchor: [13, 41],
+      iconUrl: 'leaflet/marker-icon.png',
+      shadowUrl: 'leaflet/marker-shadow.png'
+      })
+    })];
+  }
+
+  onImport(){
+    this.windturbineForm.controls['lat'].setValue(this.layers[0].getLatLng()['lat']);
+    this.windturbineForm.controls['long'].setValue(this.layers[0].getLatLng()['lng']);
+  }
 }
