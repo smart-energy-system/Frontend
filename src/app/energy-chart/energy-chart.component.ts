@@ -16,6 +16,7 @@ export class EnergyChartComponent implements OnInit {
 
   ngOnInit() {
     //this.getForecast();
+    this.onClickMe();
   }
 
   getForecast() : void{
@@ -33,6 +34,13 @@ export class EnergyChartComponent implements OnInit {
     }else{
       this.chart.update();
     }
+  }
+
+  randomColor(){
+      var r = Math.floor(Math.random() * 255);
+      var g = Math.floor(Math.random() * 255);
+      var b = Math.floor(Math.random() * 255);
+      return "rgb(" + r + "," + g + "," + b + ")";
   }
 
   onClickMe() {
@@ -54,7 +62,8 @@ export class EnergyChartComponent implements OnInit {
           console.log("Get data for:"+ entry.id)
           let data = { 
             data: [],
-            label: "Panel " + entry.id,
+            label: "Photovoltaic Panel " + entry.id,
+            borderColor: this.randomColor(),
             fill: false
           };
           forecast.forecast.forEach(forecastEntity => data.data.push({ x: forecastEntity.timestamp, y: forecastEntity.value}));
@@ -90,7 +99,15 @@ export class EnergyChartComponent implements OnInit {
         display: true,
         text: 'World population per region (in millions)'
       },
+      responsive: true,
+      maintainAspectRatio : false,
       animation: { duration: 0 },
+      legend:{
+        position : 'right',
+        labels: {
+          fontSize: 20
+      }
+      },
       scales: {
         xAxes: [{
             type: 'time',
