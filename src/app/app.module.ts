@@ -20,6 +20,7 @@ import { WindturbineComponent } from './supplieroverview/windturbine/windturbine
 import { PhotovoltaicpanelComponent } from './supplieroverview/photovoltaicpanel/photovoltaicpanel.component';
 import { HomeComponent } from './consumeroverview/home/home.component';
 import { OfficebuildingComponent } from './consumeroverview/officebuilding/officebuilding.component';
+import { EnergyChartComponent } from './energy-chart/energy-chart.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { OfficebuildingComponent } from './consumeroverview/officebuilding/offic
     WindturbineComponent,
     PhotovoltaicpanelComponent,
     HomeComponent,
-    OfficebuildingComponent
+    OfficebuildingComponent,
+    EnergyChartComponent
   ],
   imports: [
     BrowserModule,

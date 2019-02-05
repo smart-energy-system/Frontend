@@ -1,0 +1,111 @@
+import { Component, OnInit,ElementRef  } from '@angular/core';
+import { ForecastService } from '../forecast.service';
+import { Chart } from 'chart.js';
+import { EnergyForecast } from '../energyForecast';
+@Component({
+  selector: 'app-energy-chart',
+  templateUrl: './energy-chart.component.html',
+  styleUrls: ['./energy-chart.component.css']
+})
+export class EnergyChartComponent implements OnInit {
+
+  forecast : EnergyForecast;
+  chart : any;
+  chartDataSet : any;
+  constructor(private forecastService: ForecastService,private elementRef: ElementRef) { }
+
+  ngOnInit() {
+    //this.getForecast();
+  }
+
+  getForecast() : void{
+    this.forecastService.getForecast(1,86400000)
+    .subscribe(forecast => this.forecast = forecast);
+  }
+
+  onInit(){
+    this.initChart();
+  }
+
+  initOrUpdateChart(){
+    if(this.chart == null){
+      this.initChart();
+    }else{
+      this.chart.update();
+    }
+  }
+
+  onClickMe() {
+    console.log("bLub");
+    console.log(this.forecast);
+    let ids : string[];
+    ids = [];
+    this.chartDataSet = {
+      datasets: []
+    };
+    this.forecastService.getAllIds("photovoltaicPanels").subscribe(entityList => entityList.forEach(entry =>
+      {
+        //Request for each id
+        console.log(entry.id);
+        ids.push(entry.id);
+        this.forecastService.getForecast(entry.id,86400000).subscribe(forecast =>
+          {
+          //Add data to chart
+          console.log("Get data for:"+ entry.id)
+          let data = { 
+            data: [],
+            label: "Panel " + entry.id,
+            fill: false
+          };
+          forecast.forecast.forEach(forecastEntity => data.data.push({ x: forecastEntity.timestamp, y: forecastEntity.value}));
+          this.chartDataSet.datasets.push(data);
+          this.initOrUpdateChart();
+        });
+    }));
+
+    // this.chartDataSet.datasets.push({ 
+    //   data: [86,114,106,106,107,111,133,221,783,2478],
+    //   label: "Africa",
+    //   borderColor: "#3e95cd",
+    //   fill: false
+    // });
+
+
+    // let data = { 
+    //   data: [],
+    //   label: "Panel 1",
+    //   fill: false
+    // };
+    // this.forecast.forecast.forEach(forecastEntity => data.data.push({ x: forecastEntity.timestamp, y: forecastEntity.value}))
+    // this.chartDataSet.datasets.push(data);
+  }
+
+  initChart(){
+  let htmlRef = this.elementRef.nativeElement.querySelector(`#canvas`);
+  this.chart = new Chart(htmlRef, {
+    type: 'line',
+    data: this.chartDataSet,
+    options: {
+      title: {
+        display: true,
+        text: 'World population per region (in millions)'
+      },
+      animation: { duration: 0 },
+      scales: {
+        xAxes: [{
+            type: 'time',
+            time: {
+              unit: 'hour'
+          }
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Unit: W'
+          }
+        }]
+    }
+    }
+  });
+}
+}
