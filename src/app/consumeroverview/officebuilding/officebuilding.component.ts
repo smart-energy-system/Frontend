@@ -22,6 +22,7 @@ export class OfficebuildingComponent implements OnInit {
   };
 
   id: number;
+  office: Object;
   officeForm: FormGroup;
   submitted = false;
   success = false;
@@ -41,6 +42,15 @@ export class OfficebuildingComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
+      this.http.get("http://localhost:8090/consumer/officeBuildings/"+this.id).subscribe(data => {
+        this.office = data;
+        this.officeForm.controls['displayname'].setValue(this.office['displayName']);
+        this.officeForm.controls['lat'].setValue(this.office['latitude']);
+        this.officeForm.controls['long'].setValue(this.office['longitude']);
+        this.officeForm.controls['averageDailyOccupancy'].setValue(this.office['averageDailyOccupancy']);
+        this.officeForm.controls['demandFlexibility'].setValue(this.office['demandFlexibility']);
+        this.officeForm.controls['floorAreaSize'].setValue(this.office['floorAreaSize']);
+      });
     });
   }
 

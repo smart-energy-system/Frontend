@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit } from '@angular/core';
 import { ActivatedRoute} from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -11,6 +11,8 @@ import { latLng, tileLayer, marker, icon} from 'leaflet';
 })
 export class PhotovoltaicpanelComponent implements OnInit {
 
+  @Input() id: number;
+
   options = {
     layers: [
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -21,7 +23,7 @@ export class PhotovoltaicpanelComponent implements OnInit {
     center: latLng([ 50, 11 ])
   };
 
-  id: number;
+  solarpanel: Object;
   solarpanelForm: FormGroup;
   submitted = false;
   success = false;
@@ -41,6 +43,15 @@ export class PhotovoltaicpanelComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
+      this.http.get("http://localhost:8090/supplier/photovoltaicPanels/"+this.id).subscribe(data => {
+        this.solarpanel = data;
+        this.solarpanelForm.controls['displayname'].setValue(this.solarpanel['displayName']);
+        this.solarpanelForm.controls['lat'].setValue(this.solarpanel['latitude']);
+        this.solarpanelForm.controls['long'].setValue(this.solarpanel['longitude']);
+        this.solarpanelForm.controls['maximumPowerYield'].setValue(this.solarpanel['maximumPowerYield']);
+        this.solarpanelForm.controls['moduleArea'].setValue(this.solarpanel['moduleArea']);
+        this.solarpanelForm.controls['tiltAngle'].setValue(this.solarpanel['tiltAngle']);
+      });
     });
   }
 
@@ -54,9 +65,9 @@ export class PhotovoltaicpanelComponent implements OnInit {
     }
 
     let tempdata = {
-      displayname: this.solarpanelForm.get('displayname').value,
-      lat: this.solarpanelForm.get('lat').value,
-      long: this.solarpanelForm.get('long').value,
+      displayName: this.solarpanelForm.get('displayname').value,
+      latitude: this.solarpanelForm.get('lat').value,
+      longitude: this.solarpanelForm.get('long').value,
       maximumPowerYield: this.solarpanelForm.get('maximumPowerYield').value,
       moduleArea: this.solarpanelForm.get('moduleArea').value,
       tiltAngle: this.solarpanelForm.get('tiltAngle').value
@@ -69,7 +80,7 @@ export class PhotovoltaicpanelComponent implements OnInit {
       })
     };
 
-    this.http.put("http://localhost:8090/supplier/windTurbines/" + this.id, data, httpOptions).subscribe();
+    this.http.put("http://localhost:8090/supplier/photovoltaicPanels/" + this.id, data, httpOptions).subscribe();
     this.success = true;
   }
 

@@ -22,6 +22,7 @@ export class WindturbineComponent implements OnInit {
   };
 
   id: number;
+  windturbine: Object;
   windturbineForm: FormGroup;
   submitted = false;
   success = false;
@@ -40,6 +41,14 @@ export class WindturbineComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
+      this.http.get("http://localhost:8090/supplier/windTurbines/"+this.id).subscribe(data => {
+        this.windturbine = data;
+        this.windturbineForm.controls['displayname'].setValue(this.windturbine['displayName']);
+        this.windturbineForm.controls['lat'].setValue(this.windturbine['latitude']);
+        this.windturbineForm.controls['long'].setValue(this.windturbine['longitude']);
+        this.windturbineForm.controls['bladeRadius'].setValue(this.windturbine['bladeRadius']);
+        this.windturbineForm.controls['efficiency'].setValue(this.windturbine['efficiency']);
+      });
     });
   }
 

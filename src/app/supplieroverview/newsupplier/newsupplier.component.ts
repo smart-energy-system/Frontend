@@ -84,8 +84,8 @@ export class NewsupplierComponent implements OnInit {
 
     let tempdata = {
       displayName: this.solarpanelForm.get('displayname').value,
-      lat: this.solarpanelForm.get('lat').value,
-      long: this.solarpanelForm.get('long').value,
+      latitude: this.solarpanelForm.get('lat').value,
+      longitude: this.solarpanelForm.get('long').value,
       maximumPowerYield: this.solarpanelForm.get('maximumPowerYield').value,
       moduleArea: this.solarpanelForm.get('moduleArea').value,
       tiltAngle: this.solarpanelForm.get('tiltAngle').value

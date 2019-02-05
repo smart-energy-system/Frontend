@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   };
 
   id: number;
+  home: Object;
   homeForm: FormGroup;
   submitted = false;
   success = false;
@@ -41,6 +42,15 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
+      this.http.get("http://localhost:8090/consumer/homes/"+this.id).subscribe(data => {
+        this.home = data;
+        this.homeForm.controls['displayname'].setValue(this.home['displayName']);
+        this.homeForm.controls['lat'].setValue(this.home['latitude']);
+        this.homeForm.controls['long'].setValue(this.home['longitude']);
+        this.homeForm.controls['averageDailyOccupancy'].setValue(this.home['averageDailyOccupancy']);
+        this.homeForm.controls['demandFlexibility'].setValue(this.home['demandFlexibility']);
+        this.homeForm.controls['floorAreaSize'].setValue(this.home['floorAreaSize']);
+      });
     });
   }
 

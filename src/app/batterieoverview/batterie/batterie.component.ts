@@ -22,7 +22,8 @@ export class BatterieComponent implements OnInit {
     center: latLng([ 50, 11 ])
   };
 
-  id: Object;
+  id: number;
+  batterie: Object;
   batterieForm: FormGroup;
   submitted = false;
   success = false;
@@ -100,6 +101,17 @@ export class BatterieComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
+      this.http.get("http://localhost:8090/supplier/batteries/"+this.id).subscribe(data => {
+        this.batterie = data;
+        this.batterieForm.controls['displayname'].setValue(this.batterie['displayName']);
+        this.batterieForm.controls['lat'].setValue(this.batterie['latitude']);
+        this.batterieForm.controls['long'].setValue(this.batterie['longitude']);
+        this.batterieForm.controls['chargingEfficiency'].setValue(this.batterie['chargingEfficiency']);
+        this.batterieForm.controls['maximumChargingRate'].setValue(this.batterie['maximumChargingRate']);
+        this.batterieForm.controls['maximumDischargingRate'].setValue(this.batterie['maximumDischargingRate']);
+        this.batterieForm.controls['maximumStoredEnergy'].setValue(this.batterie['maximumStoredEnergy']);
+        this.batterieForm.controls['storedEnergy'].setValue(this.batterie['storedEnergy']);
+      });
     });
   }
   
