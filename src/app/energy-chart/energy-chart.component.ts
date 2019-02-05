@@ -2,6 +2,7 @@ import { Component, OnInit,ElementRef  } from '@angular/core';
 import { ForecastService } from '../forecast.service';
 import { Chart } from 'chart.js';
 import { EnergyForecast } from '../energyForecast';
+import { DateFormatPipe } from '../dateFormatPipe';
 @Component({
   selector: 'app-energy-chart',
   templateUrl: './energy-chart.component.html',
@@ -12,7 +13,7 @@ export class EnergyChartComponent implements OnInit {
   forecast : EnergyForecast;
   chart : any;
   chartDataSet : any;
-  constructor(private forecastService: ForecastService,private elementRef: ElementRef) { }
+  constructor(private forecastService: ForecastService,private elementRef: ElementRef,private _dateFormatPipe:DateFormatPipe) { }
 
   ngOnInit() {
     //this.getForecast();
@@ -76,7 +77,13 @@ export class EnergyChartComponent implements OnInit {
     this.chartDataSet = {
       datasets: []
     };
-
+    let date = new Date();
+    date.setMilliseconds(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    
+    let myDate = this._dateFormatPipe.transform(new Date());
+    console.log(myDate);
     this.getDatePerType("supplier","photovoltaicPanels");
     this.getDatePerType("supplier","windTurbines");
 

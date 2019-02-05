@@ -25,6 +25,7 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { MatRadioModule} from '@angular/material/radio';
 import { MatInputModule} from '@angular/material/input';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import {DateFormatPipe} from './dateFormatPipe';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     MatInputModule,
     LeafletModule.forRoot()
   ],
-  providers: [],
+  providers: [DateFormatPipe],
   bootstrap: [AppComponent]
 })
 
