@@ -12,13 +12,18 @@ export class SolverComponent implements OnInit {
   startDatePlaceHolderText : string;
   endDatePlaceHolderText : string;
   solverInput: FormGroup;
-  startDate: Date;
-  endDate: string;
+  startDate : moment.Moment
+  //startTime : string;
+  endDate : moment.Moment
   exportPrice:number;
   batteryFillLevel:number;
 
   statusFormFill = true;
   statusWaiting = false;
+
+  config = {
+    mode: "time"
+  };
 
   constructor(private formBuilder: FormBuilder,private _dateFormatPipe:DateFormatPipe) {
     this.solverInput = this.formBuilder.group({
@@ -38,7 +43,10 @@ export class SolverComponent implements OnInit {
 
   onSubmit(form:NgForm){
     console.log(form);
-    this.statusFormFill = false; 
+    this.statusFormFill = false;
+    this.statusWaiting = true;
   }
+
+  
 
 }

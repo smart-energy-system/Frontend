@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card *ngIf="statusFormFill">
     To start the simulation of the micro-grid please fill out the following Form:
 <form [formGroup]="solverInput" (ngSubmit)="onSubmit(solverInput.value)">
 <!--   <mat-form-field class="demo-full-width">  
@@ -7,21 +7,38 @@
 <mat-error>  
     <span *ngIf="!solverInput.get('startDate').valid && solverInput.get('startDate').touched">Please select any Date !!!</span>  
 </mat-error>   -->
-            <mat-form-field class="full-width">  
+<!--             <mat-form-field class="full-width">  
                     <input formControlName="startDate" matInput [matDatepicker]="picker" placeholder="Start Date">  
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>  
                             <mat-datepicker touchUi="true" #picker></mat-datepicker>  
-                        </mat-form-field>            
+            </mat-form-field>            
             <mat-error>  
                 <span *ngIf="!solverInput.get('startDate').valid && solverInput.get('startDate').touched">Please enter First Name !!!</span>  
-            </mat-error>  
+            </mat-error> 
+            
+            <mat-form-field class="full-width">  
+                    <input formControlName="endDate" matInput [matDatepicker]="picker" placeholder="Start Date">  
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>  
+                            <mat-datepicker touchUi="true" #picker></mat-datepicker>  
+            </mat-form-field> 
 
             <mat-form-field class="full-width">  
-                <input formControlName="endDate" matInput placeholder="{{endDatePlaceHolderText}}">  
-            </mat-form-field>  
+                    <input matInput formControlName="endDate" type="time">
+                    <input formControlName="endDate" matInput [matDatepicker]="picker" placeholder="Start Date">  
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>  
+                            <mat-datepicker touchUi="true" #picker></mat-datepicker>  
+            </mat-form-field> 
             <mat-error>  
                 <span *ngIf="!solverInput.get('endDate').valid && solverInput.get('endDate').touched">Please enter Last Name !!!</span>  
-            </mat-error>  
+            </mat-error>   -->
+            <mat-form-field class="full-width pos1">  
+            <input autocomplete="off" mdInput  matInput name="someName" formControlName="endDate" [dpDayPicker]  mode="daytime" closeOnSelect=true theme="dp-material" attachTo=".full-width.pos1" />  
+            </mat-form-field> 
+
+            <mat-form-field class="full-width pos2">  
+                    <input autocomplete="off" mdInput  matInput name="someName" formControlName="startDate" [dpDayPicker]  mode="daytime" closeOnSelect=true theme="dp-material" attachTo=".full-width.pos2" />  
+            </mat-form-field> 
+
 
             <mat-form-field class="full-width" hintLabel="Export price in Cent per kWh">  
                     <input formControlName="exportPrice" matInput placeholder="5">  
@@ -40,5 +57,4 @@
 </form>
 </mat-card>
 
-
-<mat-spinner></mat-spinner>
+<div *ngIf="statusWaiting" id ="center" style="position:fixed;top:50%;left:50%"><mat-spinner></mat-spinner></div>
