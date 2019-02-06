@@ -13,6 +13,7 @@ import { BatterieoverviewComponent } from './batterieoverview/batterieoverview.c
 import { NewbatterieComponent } from './batterieoverview/newbatterie/newbatterie.component';
 import { WindturbineComponent } from './supplieroverview/windturbine/windturbine.component';
 import { PhotovoltaicpanelComponent } from './supplieroverview/photovoltaicpanel/photovoltaicpanel.component';
+import { SolverComponent } from './solver/solver.component';
 
 const routes: Routes = [
   {path: '', component: DashboardComponent},
@@ -53,6 +54,7 @@ const routes: Routes = [
     }]
   },
   {path: 'prices', component: PricesComponent},
+  {path: 'solver', component: SolverComponent},
 ];
 
 @NgModule({

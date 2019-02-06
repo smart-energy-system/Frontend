@@ -1,0 +1,44 @@
+<mat-card>
+    To start the simulation of the micro-grid please fill out the following Form:
+<form [formGroup]="solverInput" (ngSubmit)="onSubmit(solverInput.value)">
+<!--   <mat-form-field class="demo-full-width">  
+    <input formControlName="startDate" matInput placeholder="Start Date">   
+</mat-form-field>  
+<mat-error>  
+    <span *ngIf="!solverInput.get('startDate').valid && solverInput.get('startDate').touched">Please select any Date !!!</span>  
+</mat-error>   -->
+            <mat-form-field class="full-width">  
+                    <input formControlName="startDate" matInput [matDatepicker]="picker" placeholder="Start Date">  
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>  
+                            <mat-datepicker touchUi="true" #picker></mat-datepicker>  
+                        </mat-form-field>            
+            <mat-error>  
+                <span *ngIf="!solverInput.get('startDate').valid && solverInput.get('startDate').touched">Please enter First Name !!!</span>  
+            </mat-error>  
+
+            <mat-form-field class="full-width">  
+                <input formControlName="endDate" matInput placeholder="{{endDatePlaceHolderText}}">  
+            </mat-form-field>  
+            <mat-error>  
+                <span *ngIf="!solverInput.get('endDate').valid && solverInput.get('endDate').touched">Please enter Last Name !!!</span>  
+            </mat-error>  
+
+            <mat-form-field class="full-width" hintLabel="Export price in Cent per kWh">  
+                    <input formControlName="exportPrice" matInput placeholder="5">  
+            </mat-form-field>  
+            <mat-error>  
+                    <span *ngIf="!solverInput.get('exportPrice').valid && solverInput.get('exportPrice').touched">Please enter Last Name !!!</span>  
+            </mat-error>  
+            <mat-form-field class="full-width" hintLabel="Starting Level of the battery in kWh">  
+                    <input formControlName="batteryFillLevel" matInput placeholder="2000">  
+            </mat-form-field>  
+            <mat-error>  
+                    <span *ngIf="!solverInput.get('batteryFillLevel').valid && solverInput.get('batteryFillLevel').touched">Please enter Last Name !!!</span>  
+            </mat-error> 
+            <button mat-raised-button color="accent" [disabled]="!solverInput.valid">Submit</button>  
+
+</form>
+</mat-card>
+
+
+<mat-spinner></mat-spinner>

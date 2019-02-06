@@ -1,0 +1,10 @@
+.full-width {
+    display: flex;
+    flex-direction: column;
+    /*padding-bottom: 1.5em;
+    padding-top: 1.5em;*/
+  }
+  
+  .full-width > * {
+    width: 100%;
+  }
