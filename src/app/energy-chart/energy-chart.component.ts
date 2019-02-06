@@ -10,12 +10,15 @@ import * as moment from 'moment';
 })
 export class EnergyChartComponent implements OnInit {
 
-  forecast : EnergyForecast;
+  toggleForecastButtonText = "5 Day History";
+  forecastMode = true;
+  //forecast : EnergyForecast;
   chart : any;
   chartDataSet : any;
   stillMissingData = true;
   supplierSummed : any;
   consumerSummed : any;
+  difference: any;
 
   chart2 : any;
 
@@ -24,7 +27,9 @@ export class EnergyChartComponent implements OnInit {
 
   ngOnInit() {
     //this.getForecast();
-    this.onClickMe();
+    var today = moment();
+    var tomorrow = moment(today).add(1,'days');
+    this.requestData(today,tomorrow);
     this.initChart2();
   }
 
@@ -85,6 +90,7 @@ export class EnergyChartComponent implements OnInit {
             label = "Consumer";
             this.consumerSummed = this.updateSumm(type, forecast,this.consumerSummed, label);
           }
+          this.updateDifference();
           this.initOrUpdateChart();
         });
     }));
@@ -106,7 +112,6 @@ export class EnergyChartComponent implements OnInit {
         data: [],
         label: label,
         borderColor: this.randomColor(),
-        backgroundColor: this.randomColor(),
         fill: false
       };
       forecast.forecast.forEach(forecastEntity => summedData.data.push({ x: forecastEntity.timestamp, y: forecastEntity.value }));
@@ -123,24 +128,77 @@ export class EnergyChartComponent implements OnInit {
     return summedData;
   }
 
-  onClickMe() {
+  private updateDifference(){
+    if(this.supplierSummed != null && this.consumerSummed != null){
+      if(this.difference == null){
+        console.log("init diff");
+        this.difference = {
+          data: [],
+          label: "Difference",
+          borderColor: this.randomColor(),
+          fill: false
+        };
+        this.chartDataSet.datasets.push(this.difference);
+      }
+      console.log(this.supplierSummed);
+      console.log(this.consumerSummed);
+      this.difference.data = [];
+      for (let i in this.supplierSummed.data) { //over keys
+        console.log(i);
+        let timestamp = this.supplierSummed.data[i].x;
+        console.log(timestamp);
+        let diff = this.supplierSummed.data[i].y - this.consumerSummed.data[i].y;
+        console.log(diff);
+        this.difference.data.push({x: timestamp, y:diff});
+        console.log(this.difference);
+     }
+     console.log(this.difference);
+     this.initOrUpdateChart();
+    }
+  }
+
+  requestData(startDate : moment.Moment, endDate : moment.Moment) {
     console.log("bLub");
-    console.log(this.forecast);
-    let ids : string[];
-    ids = [];
+    //console.log(this.forecast);
+    // let ids : string[];
+    // ids = [];
     this.chartDataSet = {
       datasets: []
     };
-    var today = moment();
-    var tomorrow = moment(today).add(1,'days');
-
     //let myDate = this._dateFormatPipe.transform(today);
     //console.log(myDate);
-    this.getDatePerType("supplier","photovoltaicPanels",today,tomorrow);
-    this.getDatePerType("supplier","windTurbines",today,tomorrow);
 
-    this.getDatePerType("consumer","homes",today,tomorrow);
-    this.getDatePerType("consumer","officeBuildings",today,tomorrow);
+
+    this.getDatePerType("supplier","photovoltaicPanels",startDate,endDate);
+    this.getDatePerType("supplier","windTurbines",startDate,endDate);
+
+    this.getDatePerType("consumer","homes",startDate,endDate);
+    this.getDatePerType("consumer","officeBuildings",startDate,endDate);
+
+/*     let data = {
+      label: 'My First dataset',
+      borderColor: 'rgb(255, 99, 132)',
+      backgroundColor: 'rgb(255, 99, 132)',
+      data: [{ x: 1546819200000, y: 6 },{ x: 1546873200000, y: 8 }
+      ],
+    };
+    let dataSet1 = { x: 1546819200000, y: 6 };
+    let dataSet2 = { x: 1546873200000, y: 8 };
+    data.data.push(dataSet1);
+    data.data.push(dataSet2);
+    this.chartDataSet.datasets.push(data);
+
+    this.chartDataSet.datasets.push({
+      label: 'My First dataset2',
+      borderColor: 'rgb(255, 99, 32)',
+      backgroundColor: 'rgb(255, 99, 32)',
+      data: [{ x: 1546819200000, y: 3},{ x: 1546873200000, y: 9 }
+      ],
+    });
+  
+    this.initOrUpdateChart(); */
+
+
     // this.chartDataSet.datasets.push({ 
     //   data: [86,114,106,106,107,111,133,221,783,2478],
     //   label: "Africa",
@@ -180,7 +238,7 @@ export class EnergyChartComponent implements OnInit {
   }
 
   toogleStacked(){
-    console.log(this.chart.options.scales.yAxes[0])
+    console.log(this.chart);//.options.scales.yAxes[0])
   }
 
   initChart(){
@@ -204,22 +262,44 @@ export class EnergyChartComponent implements OnInit {
       },
       scales: {
         xAxes: [{
-            type: 'time'//,
-          //   time: {
-          //     unit: 'hour'
-          // }
+            type: 'time',
+          //    time: {
+          //      unit: 'hour'
+          //  }
         }],
         yAxes: [{
-          //type: 'linear',
-          stacked: true,
-          // scaleLabel: {
-          //   display: true,
-          //   labelString: 'Unit: W'
-          // }
+          type: 'linear',
+          //stacked: true, // if enabeld than remove fill form data sets
+           scaleLabel: {
+             display: true,
+             labelString: 'Unit: W'
+           }
         }]
     }
     }
   });
+}
+
+toogleForecastOrHistory(){
+  this.stillMissingData = true;
+  this.supplierSummed = null;
+  this.consumerSummed = null;
+  this.chart = null;
+  this.chartDataSet = null;
+  this.difference = null;
+  if(this.forecastMode){
+    this.forecastMode = false;
+    this.toggleForecastButtonText = "5 Day History";
+    var today = moment();
+    var fiveDaysBefore = moment(today).subtract(5,'days');
+    this.requestData(fiveDaysBefore,today);
+  }else{
+    this.forecastMode = true;
+    this.toggleForecastButtonText = "24h Forecast";
+    var today = moment();
+    var tomorrow = moment(today).add(1,'days');
+    this.requestData(today,tomorrow);
+  }
 }
 
 initChart2(){
@@ -227,19 +307,12 @@ initChart2(){
   this.chart2 = new Chart(htmlRef,{
     type: 'line',
     data: {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets: [{
         label: 'My First dataset',
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgb(255, 99, 132)',
-        data: [
-          6,
-          4,
-         6,
-         8,
-          5,
-          4,
-          9
+        data: [{ x: 1, y: 6 },{ x: 3, y: 8 }
         ],
       }, {
         label: 'My Second dataset',
@@ -296,6 +369,7 @@ initChart2(){
       },
       scales: {
         xAxes: [{
+          type: 'time',
           scaleLabel: {
             display: true,
             labelString: 'Month'
