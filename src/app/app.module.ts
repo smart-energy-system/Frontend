@@ -20,11 +20,12 @@ import { WindturbineComponent } from './supplieroverview/windturbine/windturbine
 import { PhotovoltaicpanelComponent } from './supplieroverview/photovoltaicpanel/photovoltaicpanel.component';
 import { HomeComponent } from './consumeroverview/home/home.component';
 import { OfficebuildingComponent } from './consumeroverview/officebuilding/officebuilding.component';
+import { EnergyChartComponent } from './energy-chart/energy-chart.component';
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { MatRadioModule} from '@angular/material/radio';
 import { MatInputModule} from '@angular/material/input';
-
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import {DateFormatPipe} from './dateFormatPipe';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     WindturbineComponent,
     PhotovoltaicpanelComponent,
     HomeComponent,
-    OfficebuildingComponent
+    OfficebuildingComponent,
+    EnergyChartComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     MatInputModule,
     LeafletModule.forRoot()
   ],
-  providers: [],
+  providers: [DateFormatPipe],
   bootstrap: [AppComponent]
 })
 
