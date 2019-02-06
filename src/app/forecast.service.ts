@@ -4,6 +4,8 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import {HttpParams} from "@angular/common/http";
 import { EnergyForecast } from './energyForecast';
+import { DateFormatPipe } from './dateFormatPipe';
+import { Moment } from 'moment';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,9 +13,9 @@ export class ForecastService {
 
   //private forecastUrl = 'http://localhost:8090/supplier/photovoltaicPanels/${id}/energyOutputForecast?maxTimestampOffset=&{maxTimestampOffset}';
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient,private _dateFormatPipe:DateFormatPipe) { }
 
-  getForecast(id: number, maxTimestampOffset: number, type: string, entitiyType : string ) {
+  getForecast(id: number, type: string, entitiyType : string, startDate : Moment, endDate: Moment ) {
     let forecastType ="";
     if(type === "supplier"){
       forecastType = "energyOutputForecast";
@@ -21,7 +23,9 @@ export class ForecastService {
     if(type === "consumer"){
       forecastType = "demandForecast";
     }
-    return this._http.get<EnergyForecast>('http://localhost:8090/'+type+'/'+ entitiyType+ '/'+ id + '/'+forecastType+'?maxTimestampOffset='+maxTimestampOffset) .pipe(
+    let startDateFormatted = this._dateFormatPipe.transform(startDate);
+    let endDateFormatted = this._dateFormatPipe.transform(endDate);
+    return this._http.get<EnergyForecast>('http://localhost:8090/'+type+'/'+ entitiyType+ '/'+ id + '/'+forecastType+'?endDate='+endDateFormatted + "&startDate="+ startDateFormatted) .pipe(
       map(forecastResponse => (forecastResponse as any)),
       tap(result => console.log('fetched result:'+ result)),
       catchError(this.handleError("Get forecast",[]))

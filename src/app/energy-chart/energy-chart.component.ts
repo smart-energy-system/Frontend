@@ -2,7 +2,7 @@ import { Component, OnInit,ElementRef  } from '@angular/core';
 import { ForecastService } from '../forecast.service';
 import { Chart } from 'chart.js';
 import { EnergyForecast } from '../energyForecast';
-import { DateFormatPipe } from '../dateFormatPipe';
+import * as moment from 'moment';
 @Component({
   selector: 'app-energy-chart',
   templateUrl: './energy-chart.component.html',
@@ -13,11 +13,19 @@ export class EnergyChartComponent implements OnInit {
   forecast : EnergyForecast;
   chart : any;
   chartDataSet : any;
-  constructor(private forecastService: ForecastService,private elementRef: ElementRef,private _dateFormatPipe:DateFormatPipe) { }
+  stillMissingData = true;
+  supplierSummed : any;
+  consumerSummed : any;
+
+  chart2 : any;
+
+  constructor(private forecastService: ForecastService,private elementRef: ElementRef) { }
+
 
   ngOnInit() {
     //this.getForecast();
     this.onClickMe();
+    this.initChart2();
   }
 
   // getForecast() : void{
@@ -46,13 +54,15 @@ export class EnergyChartComponent implements OnInit {
 
   
 
-  getDatePerType(type:string, entitiytype : string){
+  getDatePerType(type:string, entitiytype : string, startDate : moment.Moment, endDate : moment.Moment){
     this.forecastService.getAllIds(type,entitiytype).subscribe(entityList => entityList.forEach(entry =>
       {
+        console.log("Requesting id");
         //Request for each id
         console.log(entry.id);
         //ids.push(entry.id);
-        this.forecastService.getForecast(entry.id,86400000,type,entitiytype).subscribe(forecast =>
+        this.stillMissingData = false;
+        this.forecastService.getForecast(entry.id,type,entitiytype,startDate,endDate).subscribe(forecast =>
           {
           //Add data to chart
           console.log("Get data for:"+ entry.id)
@@ -61,12 +71,56 @@ export class EnergyChartComponent implements OnInit {
             label: entitiytype + entry.id,
             borderColor: this.randomColor(),
             fill: false
-          };
+            };
           forecast.forecast.forEach(forecastEntity => data.data.push({ x: forecastEntity.timestamp, y: forecastEntity.value}));
           this.chartDataSet.datasets.push(data);
+
+           //Summ type 
+           let label: string;
+          if (type === "supplier") {
+            label = "All Supplier";
+            this.supplierSummed = this.updateSumm(type, forecast,this.supplierSummed, label);
+          }
+          else {
+            label = "Consumer";
+            this.consumerSummed = this.updateSumm(type, forecast,this.consumerSummed, label);
+          }
           this.initOrUpdateChart();
         });
     }));
+  }
+
+  private updateSumm(type: string, forecast: any, summedData : any, label : string) {
+    // let summedData: any;
+    // let label: string;
+    // if (type === "supplier") {
+    //   label = "All Supplier";
+    //   summedData = this.supplierSummed;
+    // }
+    // else {
+    //   label = "Consumer";
+    //   summedData = this.consumerSummed;
+    // }
+    if (summedData == null) {
+      summedData = {
+        data: [],
+        label: label,
+        borderColor: this.randomColor(),
+        backgroundColor: this.randomColor(),
+        fill: false
+      };
+      forecast.forecast.forEach(forecastEntity => summedData.data.push({ x: forecastEntity.timestamp, y: forecastEntity.value }));
+      this.chartDataSet.datasets.push(summedData);
+      console.log(summedData.data);
+    }
+    else {
+      let counter = 0;
+      forecast.forecast.forEach(forecastEntity => {
+        summedData.data[counter].y = summedData.data[counter].y + forecastEntity.value;
+        counter++;
+      });
+    }
+    return summedData;
   }
 
   onClickMe() {
@@ -77,18 +131,16 @@ export class EnergyChartComponent implements OnInit {
     this.chartDataSet = {
       datasets: []
     };
-    let date = new Date();
-    date.setMilliseconds(0);
-    date.setMinutes(0);
-    date.setSeconds(0);
-    
-    let myDate = this._dateFormatPipe.transform(new Date());
-    console.log(myDate);
-    this.getDatePerType("supplier","photovoltaicPanels");
-    this.getDatePerType("supplier","windTurbines");
+    var today = moment();
+    var tomorrow = moment(today).add(1,'days');
 
-    this.getDatePerType("consumer","homes");
-    this.getDatePerType("consumer","officeBuildings");
+    //let myDate = this._dateFormatPipe.transform(today);
+    //console.log(myDate);
+    this.getDatePerType("supplier","photovoltaicPanels",today,tomorrow);
+    this.getDatePerType("supplier","windTurbines",today,tomorrow);
+
+    this.getDatePerType("consumer","homes",today,tomorrow);
+    this.getDatePerType("consumer","officeBuildings",today,tomorrow);
     // this.chartDataSet.datasets.push({ 
     //   data: [86,114,106,106,107,111,133,221,783,2478],
     //   label: "Africa",
@@ -127,6 +179,10 @@ export class EnergyChartComponent implements OnInit {
   this.chart.update();
   }
 
+  toogleStacked(){
+    console.log(this.chart.options.scales.yAxes[0])
+  }
+
   initChart(){
   let htmlRef = this.elementRef.nativeElement.querySelector(`#canvas`);
   this.chart = new Chart(htmlRef, {
@@ -148,20 +204,116 @@ export class EnergyChartComponent implements OnInit {
       },
       scales: {
         xAxes: [{
-            type: 'time',
-            time: {
-              unit: 'hour'
-          }
+            type: 'time'//,
+          //   time: {
+          //     unit: 'hour'
+          // }
         }],
         yAxes: [{
-          type: 'linear',
-          scaleLabel: {
-            display: true,
-            labelString: 'Unit: W'
-          }
+          //type: 'linear',
+          stacked: true,
+          // scaleLabel: {
+          //   display: true,
+          //   labelString: 'Unit: W'
+          // }
         }]
     }
     }
   });
+}
+
+initChart2(){
+  let htmlRef = this.elementRef.nativeElement.querySelector(`#canvas2`);
+  this.chart2 = new Chart(htmlRef,{
+    type: 'line',
+    data: {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [{
+        label: 'My First dataset',
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgb(255, 99, 132)',
+        data: [
+          6,
+          4,
+         6,
+         8,
+          5,
+          4,
+          9
+        ],
+      }, {
+        label: 'My Second dataset',
+        borderColor: 'rgb(54, 162, 235)',
+        backgroundColor: 'rgb(54, 162, 235)',
+        data: [
+          9,
+          3,
+          4,
+          8,
+          7,
+          6,
+          5
+        ],
+      }, {
+        label: 'My Third dataset',
+        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: 'rgb(75, 192, 192)',
+        data: [
+          6,
+          1,
+          4,
+          8,
+          1,
+          2,
+          3
+        ],
+      }, {
+        label: 'My Third dataset',
+        borderColor: 'rgb(255, 205, 86)',
+        backgroundColor: 'rgb(255, 205, 86)',
+        data: [
+          5,
+          8,
+          9,
+          4,
+          4,
+          3,
+          9
+        ],
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Chart.js Line Chart - Stacked Area'
+      },
+      tooltips: {
+        mode: 'index',
+      },
+      hover: {
+        mode: 'index'
+      },
+      scales: {
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Month'
+          }
+        }],
+        yAxes: [{
+          stacked: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Value'
+          }
+        }]
+      }
+    }
+  });
+
+
+
+
 }
 }
