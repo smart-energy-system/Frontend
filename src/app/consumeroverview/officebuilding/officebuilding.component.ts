@@ -93,4 +93,19 @@ export class OfficebuildingComponent implements OnInit {
       })
     })];
   }
+
+  onExport(){
+    this.layers = [marker([this.officeForm.get('lat').value , this.officeForm.get('long').value],{icon: icon({
+      iconSize: [25, 41],
+      iconAnchor: [13, 41],
+      iconUrl: 'leaflet/marker-icon.png',
+      shadowUrl: 'leaflet/marker-shadow.png'
+      })
+    })];
+  }
+
+  onImport(){
+    this.officeForm.controls['lat'].setValue(this.layers[0].getLatLng()['lat']);
+    this.officeForm.controls['long'].setValue(this.layers[0].getLatLng()['lng']);
+  }
 }

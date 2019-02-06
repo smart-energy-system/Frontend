@@ -116,11 +116,33 @@ export class NewconsumerComponent implements OnInit {
   }
 
   onExport(){
-
+    if(this.show == 'home'){
+      this.layers = [marker([this.homeForm.get('lat').value , this.homeForm.get('long').value],{icon: icon({
+        iconSize: [25, 41],
+        iconAnchor: [13, 41],
+        iconUrl: 'leaflet/marker-icon.png',
+        shadowUrl: 'leaflet/marker-shadow.png'
+        })
+      })];
+    }else{
+      this.layers = [marker([this.officebuildingForm.get('lat').value , this.officebuildingForm.get('long').value],{icon: icon({
+        iconSize: [25, 41],
+        iconAnchor: [13, 41],
+        iconUrl: 'leaflet/marker-icon.png',
+        shadowUrl: 'leaflet/marker-shadow.png'
+        })
+      })];
+    }
   }
 
   onImport(){
-
+    if(this.show == 'home'){
+      this.homeForm.controls['lat'].setValue(this.layers[0].getLatLng()['lat']);
+      this.homeForm.controls['long'].setValue(this.layers[0].getLatLng()['lng']);
+    }else{
+      this.officebuildingForm.controls['lat'].setValue(this.layers[0].getLatLng()['lat']);
+      this.officebuildingForm.controls['long'].setValue(this.layers[0].getLatLng()['lng']);
+    }
   }
 
   ngOnInit() {

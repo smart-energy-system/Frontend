@@ -94,4 +94,19 @@ export class PhotovoltaicpanelComponent implements OnInit {
       })
     })];
   }
+
+  onExport(){
+    this.layers = [marker([this.solarpanelForm.get('lat').value , this.solarpanelForm.get('long').value],{icon: icon({
+      iconSize: [25, 41],
+      iconAnchor: [13, 41],
+      iconUrl: 'leaflet/marker-icon.png',
+      shadowUrl: 'leaflet/marker-shadow.png'
+      })
+    })];
+  }
+
+  onImport(){
+    this.solarpanelForm.controls['lat'].setValue(this.layers[0].getLatLng()['lat']);
+    this.solarpanelForm.controls['long'].setValue(this.layers[0].getLatLng()['lng']);
+  }
 }
