@@ -1,6 +1,7 @@
 
 
 <div *ngIf="!stillMissingData" style="width:100%;height:80%;"> <canvas id="canvas">{{chart}}</canvas></div>
-<button *ngIf="!stillMissingData" (click)="toogleLogScale()">Use log scale</button>
+<button *ngIf="!stillMissingData" (click)="toogleLogScale()">{{toggleLogModeButtonText}}</button>
 <button *ngIf="!stillMissingData" (click)="toogleForecastOrHistory()">{{toggleForecastButtonText}}</button>
+<button *ngIf="!stillMissingData" (click)="toogleStacked()">{{toggleStackedtButtonText}}</button>
 <h2 *ngIf="stillMissingData">Please add at least one consumer or supplier</h2>

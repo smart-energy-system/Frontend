@@ -11,6 +11,8 @@ import * as moment from 'moment';
 export class EnergyChartComponent implements OnInit {
 
   toggleForecastButtonText = "5 Day History";
+  toggleStackedtButtonText = "Stacked Mode";
+  toggleLogModeButtonText = "Linear";
   forecastMode = true;
   chart : any;
   chartDataSet : any;
@@ -56,7 +58,6 @@ export class EnergyChartComponent implements OnInit {
         console.log("Requesting id");
         //Request for each id
         console.log(entry.id);
-        //ids.push(entry.id);
         this.stillMissingData = false;
         this.forecastService.getForecast(entry.id,type,entitiytype,startDate,endDate).subscribe(forecast =>
           {
@@ -153,27 +154,29 @@ export class EnergyChartComponent implements OnInit {
 
   toogleLogScale(){
     if(this.chart.options.scales.yAxes[0].type ==='linear'){
-      this.chart.options.scales.yAxes[0] = {
-        type: 'logarithmic',
-        scaleLabel: {
-          display: true,
-          labelString: 'Unit: W'
-        }
-      }
+      this.chart.options.scales.yAxes[0].type = "logarithmic";
+      this.toggleLogModeButtonText = "Logarithmic";
     }else{
-      this.chart.options.scales.yAxes[0] = {
-        type: 'linear',
-        scaleLabel: {
-          display: true,
-          labelString: 'Unit: W'
-        }
-      }
+      this.chart.options.scales.yAxes[0].type = "linear";
+      this.toggleLogModeButtonText = "Linear";
     }
-  this.chart.update();
+    this.chart.update();
   }
 
   toogleStacked(){
-    console.log(this.chart);//.options.scales.yAxes[0])
+    console.log(this.chart)
+    console.log(this.chart.data)
+    if(this.chart.options.scales.yAxes[0].stacked){
+      this.chart.options.scales.yAxes[0].stacked = false;
+      this.chart.data.datasets.forEach(dataset => dataset.fill = false );
+      this.toggleStackedtButtonText = "Stacked Mode";
+    }else{
+      this.chart.options.scales.yAxes[0].stacked = true;
+      this.chart.data.datasets.forEach(dataset => dataset.fill = undefined );
+      this.toggleStackedtButtonText = "Normal Mode";
+    }
+    this.initOrUpdateChart();
+    console.log(this.chart.options.scales.yAxes[0].stacked);//.options.scales.yAxes[0])
   }
 
   initChart(){
@@ -184,7 +187,8 @@ export class EnergyChartComponent implements OnInit {
     options: {
       title: {
         display: true,
-        text: 'World population per region (in millions)'
+        text: 'Supplier vs Consumer',
+        fontSize: 20
       },
       responsive: true,
       maintainAspectRatio : false,
@@ -204,7 +208,7 @@ export class EnergyChartComponent implements OnInit {
         }],
         yAxes: [{
           type: 'linear',
-          //stacked: true, // if enabeld than remove fill form data sets
+          stacked: false, // if enabeld than remove fill form data sets
            scaleLabel: {
              display: true,
              labelString: 'Unit: W'
