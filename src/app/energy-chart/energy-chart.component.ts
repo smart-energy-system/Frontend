@@ -12,15 +12,12 @@ export class EnergyChartComponent implements OnInit {
 
   toggleForecastButtonText = "5 Day History";
   forecastMode = true;
-  //forecast : EnergyForecast;
   chart : any;
   chartDataSet : any;
   stillMissingData = true;
   supplierSummed : any;
   consumerSummed : any;
   difference: any;
-
-  chart2 : any;
 
   constructor(private forecastService: ForecastService,private elementRef: ElementRef) { }
 
@@ -30,13 +27,7 @@ export class EnergyChartComponent implements OnInit {
     var today = moment();
     var tomorrow = moment(today).add(1,'days');
     this.requestData(today,tomorrow);
-    this.initChart2();
   }
-
-  // getForecast() : void{
-  //   this.forecastService.getForecast(1,86400000)
-  //   .subscribe(forecast => this.forecast = forecast);
-  // }
 
   onInit(){
     this.initChart();
@@ -97,16 +88,6 @@ export class EnergyChartComponent implements OnInit {
   }
 
   private updateSumm(type: string, forecast: any, summedData : any, label : string) {
-    // let summedData: any;
-    // let label: string;
-    // if (type === "supplier") {
-    //   label = "All Supplier";
-    //   summedData = this.supplierSummed;
-    // }
-    // else {
-    //   label = "Consumer";
-    //   summedData = this.consumerSummed;
-    // }
     if (summedData == null) {
       summedData = {
         data: [],
@@ -159,61 +140,15 @@ export class EnergyChartComponent implements OnInit {
 
   requestData(startDate : moment.Moment, endDate : moment.Moment) {
     console.log("bLub");
-    //console.log(this.forecast);
-    // let ids : string[];
-    // ids = [];
     this.chartDataSet = {
       datasets: []
     };
-    //let myDate = this._dateFormatPipe.transform(today);
-    //console.log(myDate);
-
 
     this.getDatePerType("supplier","photovoltaicPanels",startDate,endDate);
     this.getDatePerType("supplier","windTurbines",startDate,endDate);
 
     this.getDatePerType("consumer","homes",startDate,endDate);
     this.getDatePerType("consumer","officeBuildings",startDate,endDate);
-
-/*     let data = {
-      label: 'My First dataset',
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgb(255, 99, 132)',
-      data: [{ x: 1546819200000, y: 6 },{ x: 1546873200000, y: 8 }
-      ],
-    };
-    let dataSet1 = { x: 1546819200000, y: 6 };
-    let dataSet2 = { x: 1546873200000, y: 8 };
-    data.data.push(dataSet1);
-    data.data.push(dataSet2);
-    this.chartDataSet.datasets.push(data);
-
-    this.chartDataSet.datasets.push({
-      label: 'My First dataset2',
-      borderColor: 'rgb(255, 99, 32)',
-      backgroundColor: 'rgb(255, 99, 32)',
-      data: [{ x: 1546819200000, y: 3},{ x: 1546873200000, y: 9 }
-      ],
-    });
-  
-    this.initOrUpdateChart(); */
-
-
-    // this.chartDataSet.datasets.push({ 
-    //   data: [86,114,106,106,107,111,133,221,783,2478],
-    //   label: "Africa",
-    //   borderColor: "#3e95cd",
-    //   fill: false
-    // });
-
-
-    // let data = { 
-    //   data: [],
-    //   label: "Panel 1",
-    //   fill: false
-    // };
-    // this.forecast.forecast.forEach(forecastEntity => data.data.push({ x: forecastEntity.timestamp, y: forecastEntity.value}))
-    // this.chartDataSet.datasets.push(data);
   }
 
   toogleLogScale(){
@@ -302,92 +237,5 @@ toogleForecastOrHistory(){
   }
 }
 
-initChart2(){
-  let htmlRef = this.elementRef.nativeElement.querySelector(`#canvas2`);
-  this.chart2 = new Chart(htmlRef,{
-    type: 'line',
-    data: {
-      //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [{
-        label: 'My First dataset',
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgb(255, 99, 132)',
-        data: [{ x: 1, y: 6 },{ x: 3, y: 8 }
-        ],
-      }, {
-        label: 'My Second dataset',
-        borderColor: 'rgb(54, 162, 235)',
-        backgroundColor: 'rgb(54, 162, 235)',
-        data: [
-          9,
-          3,
-          4,
-          8,
-          7,
-          6,
-          5
-        ],
-      }, {
-        label: 'My Third dataset',
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgb(75, 192, 192)',
-        data: [
-          6,
-          1,
-          4,
-          8,
-          1,
-          2,
-          3
-        ],
-      }, {
-        label: 'My Third dataset',
-        borderColor: 'rgb(255, 205, 86)',
-        backgroundColor: 'rgb(255, 205, 86)',
-        data: [
-          5,
-          8,
-          9,
-          4,
-          4,
-          3,
-          9
-        ],
-      }]
-    },
-    options: {
-      responsive: true,
-      title: {
-        display: true,
-        text: 'Chart.js Line Chart - Stacked Area'
-      },
-      tooltips: {
-        mode: 'index',
-      },
-      hover: {
-        mode: 'index'
-      },
-      scales: {
-        xAxes: [{
-          type: 'time',
-          scaleLabel: {
-            display: true,
-            labelString: 'Month'
-          }
-        }],
-        yAxes: [{
-          stacked: true,
-          scaleLabel: {
-            display: true,
-            labelString: 'Value'
-          }
-        }]
-      }
-    }
-  });
 
-
-
-
-}
 }
