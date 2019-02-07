@@ -2,6 +2,8 @@ import { Component, Input, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { ChartComponent } from './chart/chart.component';
+import { DataService } from '../data.service';
+import { HttpClient } from "@angular/common/http";
 
 @Component({
     selector: 'app-prices',
@@ -38,22 +40,33 @@ export class PricesComponent implements OnInit {
     max: Date;
     options: FormGroup;
 
-    constructor(fb: FormBuilder) {
+    displayedColumns: string[] = ['date', 'price'];
+    dataSource = [
+        { date: '2018-12-02', price: 40},
+        { date: '2018-12-03', price: 30}
+    ];
+
+    constructor(private fb: FormBuilder, private dataService: DataService, ) {
         this.options = fb.group({
-            floatLabel: 'chart',
+            floatLabel: 'chart'
         });
     }
 
-    changeLabelCheckbox(event: { checked: any }, label: any) {
-        if (event.checked) {
-            this.chart.showData(label);
-        } else {
-            this.chart.hideData(label);
-        }
-    }
+    // changeLabelCheckbox(event: { checked: any }, label: any) {
+    //     if (event.checked) {
+    //         this.chart.showData(label);
+    //     } else {
+    //         this.chart.hideData(label);
+    //     }
+    // }
 
     // [TODO] call rest api to get required data
     dataChange() {
+        // TODO fix request
+        this.dataService.getPrices(this.min.toISOString(), this.max.toISOString()).subscribe((prices) => {
+            alert(prices);
+        });
+
         const nrOfDataLines = this.randomIntFromInterval(2, 5);
         const dataList: any[][] = [];
 

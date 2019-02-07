@@ -26,7 +26,7 @@
         </form>
     </mat-expansion-panel>
 
-    <mat-expansion-panel class="expansionpanel" *ngIf="dataLabels">
+    <!-- <mat-expansion-panel class="expansionpanel" *ngIf="dataLabels">
         <mat-expansion-panel-header>
             <mat-panel-title>Data Labels</mat-panel-title>
             <mat-panel-description>Select the labels to show</mat-panel-description>
@@ -38,10 +38,24 @@
                 </mat-list-item>
             </mat-list>
         </div>
-    </mat-expansion-panel>
+    </mat-expansion-panel> -->
 
     
 </mat-accordion>
-<ng-container *ngIf="xLabels && data">
+<ng-container *ngIf="xLabels && data && options.controls.floatLabel.value == 'chart'">
     <prices-chart #chart [data]="data" [xLabels]="xLabels" [format]="'%y-%m-%d'"></prices-chart>
 </ng-container>
+<mat-card class="margin:2rem" *ngIf="xLabels && data && options.controls.floatLabel.value == 'table'">
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.date}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.price}}</mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</mat-card>

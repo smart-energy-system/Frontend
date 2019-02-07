@@ -32,3 +32,7 @@
 .radiobutton-container .mat-radio-button {
   margin: 0 5px;
 }
+
+table {
+  width: 100%;
+}

@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule} from '@angular/material';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BatterieComponent } from './batterieoverview/batterie/batterie.component';
 import { ChartComponent } from './prices/chart/chart.component';
@@ -62,6 +64,8 @@ import {DateFormatPipe} from './dateFormatPipe';
     MatSidenavModule,
     MatListModule,
     MatIconModule,
+    MatTableModule,
+    MatCardModule,
     ReactiveFormsModule,
     FormsModule,
     MatRadioModule,
