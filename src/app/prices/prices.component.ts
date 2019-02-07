@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ChartComponent } from './chart/chart.component';
 import { DataService } from '../data.service';
 import { HttpClient } from "@angular/common/http";
-
+import { DateFormatPipe } from '../dateFormatPipe';
 @Component({
     selector: 'app-prices',
     templateUrl: './prices.component.html',
@@ -46,7 +46,7 @@ export class PricesComponent implements OnInit {
         { date: '2018-12-03', price: 30}
     ];
 
-    constructor(private fb: FormBuilder, private dataService: DataService, ) {
+    constructor(private fb: FormBuilder, private dataService: DataService,private _dateFormatPipe:DateFormatPipe ) {
         this.options = fb.group({
             floatLabel: 'chart'
         });
@@ -63,7 +63,7 @@ export class PricesComponent implements OnInit {
     // [TODO] call rest api to get required data
     dataChange() {
         // TODO fix request
-        this.dataService.getPrices(this.min.toISOString(), this.max.toISOString()).subscribe((prices) => {
+        this.dataService.getPrices(this._dateFormatPipe.transform(this.min), this._dateFormatPipe.transform(this.max)).subscribe((prices) => {
             alert(prices);
         });
 
