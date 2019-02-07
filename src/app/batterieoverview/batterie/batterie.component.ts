@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,NgZone } from '@angular/core';
 import { DataService } from '../../data.service';
 import { ActivatedRoute} from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -29,7 +29,7 @@ export class BatterieComponent implements OnInit {
   success = false;
   layers;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute) {
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute,private zone: NgZone) {
     this.batterieForm = this.formBuilder.group({
       displayname: ['' , Validators.required],
       lat: ['', Validators.required],
@@ -69,8 +69,13 @@ export class BatterieComponent implements OnInit {
       })
     };
 
-    this.http.put("http://localhost:8090/supplier/batteries/"+this.id, data, httpOptions).subscribe();
-    this.success = true;
+    this.http.put("http://localhost:8090/supplier/batteries/"+this.id, data, httpOptions).subscribe(()=>{
+      this.zone.runOutsideAngular<any>(()=>{
+        location.reload();
+      });
+      this.success = true;
+    });
+    //this.success = true;
   }
 
   onLeafletClick(event){

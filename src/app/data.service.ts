@@ -18,7 +18,7 @@ export class DataService {
 
     getAllHomes() {
         return this.http.get("http://localhost:8090/consumer/homes");
-    }
+    }s
 
     getAllOfficeBuildings() {
         return this.http.get("http://localhost:8090/consumer/officeBuildings");

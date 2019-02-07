@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,NgZone} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { latLng, tileLayer, marker, icon } from 'leaflet';
@@ -27,7 +27,7 @@ export class NewconsumerComponent implements OnInit {
   success = false;
   layers;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
+  constructor(private formBuilder: FormBuilder, private http: HttpClient,private zone: NgZone) {
     this.homeForm = this.formBuilder.group({
       displayname: ['' , Validators.required],
       lat: ['' , Validators.required],
@@ -71,8 +71,15 @@ export class NewconsumerComponent implements OnInit {
       })
     };
 
-    this.http.post("http://localhost:8090/consumer/homes", data, httpOptions).subscribe();
-    this.success = true;
+    this.http.post("http://localhost:8090/consumer/homes", data, httpOptions).subscribe(
+      ()=>{
+        this.zone.runOutsideAngular<any>(()=>{
+          location.reload();
+        });
+        this.success = true;
+      }
+    );
+    //this.success = true;
   }
 
   onSubmitOffice(){
@@ -100,7 +107,12 @@ export class NewconsumerComponent implements OnInit {
       })
     };
 
-    this.http.post("http://localhost:8090/consumer/officeBuildings", data, httpOptions).subscribe();
+    this.http.post("http://localhost:8090/consumer/officeBuildings", data, httpOptions).subscribe(()=>{
+      this.zone.runOutsideAngular<any>(()=>{
+        location.reload();
+      });
+      this.success = true;
+    });
     this.success = true;
   }
 

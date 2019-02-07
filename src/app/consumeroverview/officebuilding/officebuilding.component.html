@@ -1,5 +1,5 @@
 <div class="content_left">
-  <form [formGroup]="officeForm" (ngSubmit)="onSubmitHome()">
+  <form [formGroup]="officeForm" (ngSubmit)="onSubmitUpdate()">
 
     <mat-form-field class="field-full-width">
       <input matInput placeholder="Displayname" type="text" formControlName="displayname" [errorStateMatcher]="matcher">
@@ -46,7 +46,7 @@
       </mat-error>
     </mat-form-field>
 
-    <input type="submit" ng-click="onSubmitHome()" value="Update" class="cta">
+    <input type="submit" ng-click="onSubmitUpdate()" value="Update" class="cta">
   </form>
 </div>
 <div class="content_middle">

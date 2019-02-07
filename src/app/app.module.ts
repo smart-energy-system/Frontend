@@ -5,12 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import {MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule} from '@angular/material';
+import {MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule,MatCardModule,MatMenuModule,MatFormFieldModule,MatDatepickerModule,
+  MatNativeDateModule,MatSelectModule,MatOptionModule,MatSlideToggleModule} from '@angular/material';
+//import {MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule} from '@angular/material';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
+//import { MatTableModule } from '@angular/material/table';
+//import { MatCardModule } from '@angular/material/card';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BatterieComponent } from './batterieoverview/batterie/batterie.component';
 import { ChartComponent } from './prices/chart/chart.component';
@@ -32,7 +33,11 @@ import { MatRadioModule} from '@angular/material/radio';
 import { MatInputModule} from '@angular/material/input';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import {DateFormatPipe} from './dateFormatPipe';
-
+import { SolverComponent } from './solver/solver.component';
+import {DpDatePickerModule} from 'ng2-date-picker';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
+import {  MatPaginatorModule, 
+  MatSortModule, MatTableModule } from "@angular/material";
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +56,8 @@ import {DateFormatPipe} from './dateFormatPipe';
     PhotovoltaicpanelComponent,
     HomeComponent,
     OfficebuildingComponent,
-    EnergyChartComponent
+    EnergyChartComponent,
+    SolverComponent
   ],
   imports: [
     BrowserModule,
@@ -70,12 +76,42 @@ import {DateFormatPipe} from './dateFormatPipe';
     FormsModule,
     MatRadioModule,
     MatInputModule,
+    MatCardModule,
+    MatDatepickerModule,
+    DpDatePickerModule,
+    MatNativeDateModule,
+    MatProgressSpinnerModule,
+    LeafletModule.forRoot(),
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+MatProgressSpinnerModule,
     MatExpansionModule,
     MatCheckboxModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     LeafletModule.forRoot()
   ],
+  exports: [  
+    MatButtonModule,  
+    MatMenuModule,  
+    MatToolbarModule,  
+    MatIconModule,  
+    MatCardModule,  
+    BrowserAnimationsModule,  
+    MatFormFieldModule,  
+    MatInputModule,  
+    MatDatepickerModule,  
+    MatNativeDateModule,  
+    MatRadioModule,  
+    MatSelectModule,  
+    MatOptionModule,  
+    MatSlideToggleModule  
+  ], 
   providers: [DateFormatPipe],
   bootstrap: [AppComponent]
 })

@@ -16,6 +16,7 @@ export class ConsumeroverviewComponent implements OnInit {
 
   ngOnInit() {
     this.data.getAllHomes().subscribe(data => {
+      console.log(data)
       this.homes = data;
     });
     this.data.getAllOfficeBuildings().subscribe(data => {
