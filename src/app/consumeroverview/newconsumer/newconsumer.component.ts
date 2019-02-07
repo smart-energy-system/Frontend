@@ -107,7 +107,12 @@ export class NewconsumerComponent implements OnInit {
       })
     };
 
-    this.http.post("http://localhost:8090/consumer/officeBuildings", data, httpOptions).subscribe();
+    this.http.post("http://localhost:8090/consumer/officeBuildings", data, httpOptions).subscribe(()=>{
+      this.zone.runOutsideAngular<any>(()=>{
+        location.reload();
+      });
+      this.success = true;
+    });
     this.success = true;
   }
 

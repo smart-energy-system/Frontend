@@ -1,4 +1,4 @@
-import { Input, Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit,NgZone } from '@angular/core';
 import { ActivatedRoute} from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -29,7 +29,7 @@ export class PhotovoltaicpanelComponent implements OnInit {
   success = false;
   layers;
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private http: HttpClient) {
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private http: HttpClient,private zone: NgZone) {
     this.solarpanelForm = this.formBuilder.group({
       displayname: ['', Validators.required],
       lat: ['', Validators.required],
@@ -80,7 +80,12 @@ export class PhotovoltaicpanelComponent implements OnInit {
       })
     };
 
-    this.http.put("http://localhost:8090/supplier/photovoltaicPanels/" + this.id, data, httpOptions).subscribe();
+    this.http.put("http://localhost:8090/supplier/photovoltaicPanels/" + this.id, data, httpOptions).subscribe(()=>{
+      this.zone.runOutsideAngular<any>(()=>{
+        location.reload();
+      });
+      this.success = true;
+    });
     this.success = true;
   }
 
