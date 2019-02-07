@@ -30,6 +30,8 @@ import {DateFormatPipe} from './dateFormatPipe';
 import { SolverComponent } from './solver/solver.component';
 import {DpDatePickerModule} from 'ng2-date-picker';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
+import {  MatPaginatorModule, 
+  MatSortModule, MatTableModule } from "@angular/material";
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,7 +72,15 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     DpDatePickerModule,
     MatNativeDateModule,
     MatProgressSpinnerModule,
-    LeafletModule.forRoot()
+    LeafletModule.forRoot(),
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+MatProgressSpinnerModule
   ],
   exports: [  
     MatButtonModule,  

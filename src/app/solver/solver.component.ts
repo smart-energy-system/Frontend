@@ -1,10 +1,21 @@
-import { Component, OnInit ,ElementRef} from '@angular/core';
+import { Component, OnInit ,ElementRef,ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators,NgForm  } from '@angular/forms';
 import * as moment from 'moment';
 import { DateFormatPipe } from '../dateFormatPipe';
 import { SolverFetchService } from '../solver-fetch.service';
 import { Chart } from 'chart.js';
 import { SolverSolution } from '../solverSolution';
+import { SolutionStep } from '../solverSolution';
+import {MatTableModule} from '@angular/material/table';
+import { count } from 'rxjs/operators';
+import {MatTable} from '@angular/material';
+
+export interface TableElemntSolutionStep {
+  step: number;
+  variables: SolutionStep;
+}
+
+
 @Component({
   selector: 'app-solver',
   templateUrl: './solver.component.html',
@@ -25,10 +36,31 @@ export class SolverComponent implements OnInit {
   statusFormFill = true;
   statusWaiting = false;
   statusCharts = false;
+  statusText = false;
 
   chartEnergy : any;
   chartPrice : any;
   chartBattery : any;
+
+  tableElemntSolutionSteps : TableElemntSolutionStep[] = [];
+
+  @ViewChild(MatTable) table: MatTable<any>;
+
+  textVisable: boolean = false;
+  displayedColumnsText : string[] = ['step', 'text'];
+  displayedColumnsWithoutText : string[] = ['step',
+  'OfficeBuildings','Homes','TotalDemand',
+  'TotalSuppliers','Difference','GridImport',
+  'PositivShiftHome','NegativShiftHome',
+  'positivShiftOffice','NegativShiftOffice','batteryFillLevel','batteryChargeRate','discargeRate' ,'importCost','exportProfit'];
+  displayedColumns : string[] = this.displayedColumnsWithoutText;
+/*    displayedColumnsWithoutText: string[] = ['step',
+   'OfficeBuildings','Homes','TotalDemand',
+   'TotalSuppliers','Difference','GridImport',
+   'PositivShiftHome','NegativShiftHome',
+   'positivShiftOffice','NegativShiftOffice','batteryFillLevel','batteryChargeRate',discargeRate'importCost','exportProfit']; */
+
+  solverSolution : SolverSolution;
 
   config = {
     mode: "time"
@@ -57,11 +89,17 @@ export class SolverComponent implements OnInit {
       batteryFillLevel : 0,
       calculationBound : 1000
     })
+    //this.table.h
     //this.initCharts();
     //this.startDatePlaceHolderText = this._dateFormatPipe.transform(now);
     //this.endDatePlaceHolderText = this._dateFormatPipe.transform(inFourHours);
     //let htmlRef = this.elementRef.nativeElement.querySelector(`#canvaschartEnergy`);
     //console.log(htmlRef);
+
+    //this.tableElemntSolutionSteps.push({step:1,text:"jjgffffffffffffffffghfghfghfghfghghfghg<b>fdfddf</b>hfhfghfghfghgfhfghfghfghfghgfhfkjl",variables: "jhkjhjk"});
+    //this.tableElemntSolutionSteps.push({step:2,text:"jjkjl",variables: "jhkjhjk"});
+    //this.tableElemntSolutionSteps.push({step:3,text:"jjkjl",variables: "jhkjhjk"});
+    //this.tableElemntSolutionSteps.push({step:4,text:"jjkjl",variables: "jhkjhjk"});
   }
   randomColor(){
     var r = Math.floor(Math.random() * 255);
@@ -71,7 +109,18 @@ export class SolverComponent implements OnInit {
 }
 
   toggleTextView(){
-    
+    this.statusCharts = false;
+    this.statusText = true;
+  }
+
+  toggleTextInTable(){
+    if(this.textVisable){
+      this.textVisable = false;
+      this.displayedColumns = this.displayedColumnsWithoutText;
+    }else{
+      this.textVisable = true;
+      this.displayedColumns = this.displayedColumnsText;
+    }
   }
 
   onSubmit(form:any){
@@ -80,6 +129,7 @@ export class SolverComponent implements OnInit {
     this.statusWaiting = true;
     console.log("StartDate:"+ form.startDate + " EndDate:"+ form.endDate);
     this.solverFetchService.getSolution(form.startDate,form.endDate,form.calculationBound, form.exportPrice).subscribe(solverSolution => {
+      this.solverSolution = (solverSolution as SolverSolution);
       console.log(solverSolution);
       this.statusWaiting = false;
       this.statusCharts = true;
@@ -189,6 +239,8 @@ export class SolverComponent implements OnInit {
         this.chartBattery.data.labels.push(counter);
         counter++;
         console.log("Fore each:"+ counter);
+        this.tableElemntSolutionSteps.push({step: counter, variables: solverSolutionStep});
+        this.table.renderRows();
       })
       this.chartEnergy.data.datasets.push(supplyData);
       this.chartEnergy.data.datasets.push(homeConsumer);

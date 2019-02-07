@@ -32,7 +32,7 @@
                 <span *ngIf="!solverInput.get('endDate').valid && solverInput.get('endDate').touched">Please enter Last Name !!!</span>  
             </mat-error>   -->
 
-            <!-- Removed placeholder for default values-->
+                <!-- Removed placeholder for default values-->
                 <div class="padding-group">
                         <b>Timespan:</b>
                         <mat-form-field class="full-width pos1" hintLabel="Pick start date">
@@ -83,7 +83,8 @@
                         </mat-form-field>
                         <mat-error>
                                 <span
-                                        *ngIf="!solverInput.get('stepCountOverwrite').valid && solverInput.get('calculationBound').touched">Please enter a for the solver step count</span>
+                                        *ngIf="!solverInput.get('stepCountOverwrite').valid && solverInput.get('calculationBound').touched">Please
+                                        enter a for the solver step count</span>
                         </mat-error>
                 </div>
 
@@ -95,11 +96,136 @@
 <div *ngIf="statusWaiting" id="center" style="position:fixed;top:50%;left:50%">
         <mat-spinner></mat-spinner>
 </div>
-<button *ngIf="statusCharts" (click)="toggleTextView()">Switch to text view</button>
-<button *ngIf="!statusCharts" (click)="toggleTextView()">Switch to chart view</button>
 <div [hidden]="!statusCharts" style="width:100%;height:30%;"> <canvas id="canvaschartEnergy">{{chartEnergy}}</canvas>
 </div>
 <div [hidden]="!statusCharts" style="width:100%;height:30%;"> <canvas id="canvaschartPrice">{{chartPrice}}</canvas>
 </div>
 <div [hidden]="!statusCharts" style="width:100%;height:30%;"> <canvas id="canvaschartBattery">{{chartBattery}}</canvas>
+</div>
+
+<div [hidden]="!statusCharts">
+        <button (click)="toggleTextView()">Switch to text view</button>
+</div>
+
+<div [hidden]="!statusCharts">
+        <button (click)="toggleTextInTable()">Toogle Text</button>
+</div>
+
+<div [hidden]="true" class="padded-width">
+        <table mat-table [dataSource]="tableElemntSolutionSteps" class="mat-elevation-z8">
+
+                <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+                <!-- Position Column -->
+                <ng-container matColumnDef="step">
+                        <th mat-header-cell *matHeaderCellDef> Step </th>
+                        <td mat-cell *matCellDef="let element"> {{element.step}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="text">
+                        <th mat-header-cell *matHeaderCellDef> Text </th>
+                        <td mat-cell *matCellDef="let element"> All Office Buildings have a demand of
+                                {{element.variables.pd[0]}} kW, while all homes have a demand of
+                                {{element.variables.pd[1]}} kW. <br>
+                                So the total demand is {{element.variables.pd[0]+element.variables.pd[1]}} All Supplier
+                                provide {{element.variables.ps}} kW. This results in a difference of
+                                {{element.variables.ps-(element.variables.pd[0]+element.variables.pd[1])}} kW<br>
+                        </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <!--<ng-container matColumnDef="variables">
+                        <th mat-header-cell *matHeaderCellDef> Variables </th>
+                        <td mat-cell *matCellDef="let element">Office Buildings demand:<b>{{element.variables.pd[0]}}</b> kW<br>
+                                Homes demand:<b>{{element.variables.pd[1]}}</b> kW<br>
+                                Total demand:<b>{{element.variables.pd[0]+element.variables.pd[1]}} </b> kW<br>
+                                Suppliers:<b>{{element.variables.ps}}</b>kW<br>
+                        </td>
+                </ng-container>-->
+
+                <ng-container matColumnDef="OfficeBuildings">
+                        <th mat-header-cell *matHeaderCellDef>Office Buildings</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.pd[0]}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Homes">
+                        <th mat-header-cell *matHeaderCellDef>Homes</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.pd[1]}} </td>
+                </ng-container>
+                <ng-container matColumnDef="TotalDemand">
+                        <th mat-header-cell *matHeaderCellDef>Total Demand</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.pd[0]+element.variables.pd[1]}}
+                        </td>
+                </ng-container>
+                <ng-container matColumnDef="TotalSuppliers">
+                        <th mat-header-cell *matHeaderCellDef>Total Suppliers</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.ps}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Difference">
+                        <th mat-header-cell *matHeaderCellDef>Difference</th>
+                        <td mat-cell *matCellDef="let element">
+                                {{element.variables.ps-(element.variables.pd[0]+element.variables.pd[1])}} </td>
+                </ng-container>
+                <ng-container matColumnDef="GridImport">
+                        <th mat-header-cell *matHeaderCellDef>Grid Import</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.pg}} </td>
+                </ng-container>
+                <ng-container matColumnDef="PositivShiftHome">
+                        <th mat-header-cell *matHeaderCellDef>Positiv Shift Home</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.pposShift[0]}} </td>
+                </ng-container>
+                <ng-container matColumnDef="NegativShiftHome">
+                        <th mat-header-cell *matHeaderCellDef>Negativ Shift Home</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.pnegShift[0]}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="positivShiftOffice">
+                        <th mat-header-cell *matHeaderCellDef>Positiv Shift Office</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.pposShift[1]}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="NegativShiftOffice">
+                        <th mat-header-cell *matHeaderCellDef>Negativ Shift Office</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.pnegShift[1]}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="batteryFillLevel">
+                        <th mat-header-cell *matHeaderCellDef>Battery Level</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.batteryFillLevel}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="batteryChargeRate">
+                        <th mat-header-cell *matHeaderCellDef>Charge Rate</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.chargeRate}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="discargeRate">
+                        <th mat-header-cell *matHeaderCellDef>Discharge Rate</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.discargeRate}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="importCost">
+                        <th mat-header-cell *matHeaderCellDef>Import Cost</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.importCost}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="exportProfit">
+                        <th mat-header-cell *matHeaderCellDef>Export Profit</th>
+                        <td mat-cell *matCellDef="let element"> {{element.variables.exportProfit}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+</div>
+
+<div *ngIf="solverSolution" class="padding-group">
+                <mat-card>
+                        <h3>Summary:</h3>
+                        <div>For the whole simulation there was a total grid import cost of
+                        {{solverSolution.totalImportCost}} Cent and a total profit from exporting energy of
+                        {{solverSolution.totalExportProfit}} Cent.
+                        This results in a total profit of {{solverSolution.totalProfit/100}} Euro.</div>
+                </mat-card>
 </div>
