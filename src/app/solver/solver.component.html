@@ -1,13 +1,13 @@
 <mat-card *ngIf="statusFormFill">
-    To start the simulation of the micro-grid please fill out the following Form:
-<form [formGroup]="solverInput" (ngSubmit)="onSubmit(solverInput.value)">
-<!--   <mat-form-field class="demo-full-width">  
+        To start the simulation of the micro-grid please fill out the following Form:
+        <form [formGroup]="solverInput" (ngSubmit)="onSubmit(solverInput.value)">
+                <!--   <mat-form-field class="demo-full-width">  
     <input formControlName="startDate" matInput placeholder="Start Date">   
 </mat-form-field>  
 <mat-error>  
     <span *ngIf="!solverInput.get('startDate').valid && solverInput.get('startDate').touched">Please select any Date !!!</span>  
 </mat-error>   -->
-<!--             <mat-form-field class="full-width">  
+                <!--             <mat-form-field class="full-width">  
                     <input formControlName="startDate" matInput [matDatepicker]="picker" placeholder="Start Date">  
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>  
                             <mat-datepicker touchUi="true" #picker></mat-datepicker>  
@@ -31,42 +31,75 @@
             <mat-error>  
                 <span *ngIf="!solverInput.get('endDate').valid && solverInput.get('endDate').touched">Please enter Last Name !!!</span>  
             </mat-error>   -->
-            <mat-form-field class="full-width pos1" hintLabel="Pick start date">  
-            <input autocomplete="off" mdInput  matInput name="someName" formControlName="startDate" [dpDayPicker]  mode="daytime" closeOnSelect=true theme="dp-material" attachTo=".full-width.pos1" />  
-            </mat-form-field> 
 
-            <mat-form-field class="full-width pos2" hintLabel="Pick end date">  
-                    <input autocomplete="off" mdInput  matInput name="someName" formControlName="endDate" [dpDayPicker]  mode="daytime" closeOnSelect=true theme="dp-material" attachTo=".full-width.pos2" />  
-            </mat-form-field> 
+            <!-- Removed placeholder for default values-->
+                <div class="padding-group">
+                        <b>Timespan:</b>
+                        <mat-form-field class="full-width pos1" hintLabel="Pick start date">
+                                <input autocomplete="off" mdInput matInput name="someName" formControlName="startDate"
+                                        [dpDayPicker] mode="daytime" closeOnSelect=true theme="dp-material"
+                                        attachTo=".full-width.pos1" />
+                        </mat-form-field>
 
+                        <mat-form-field class="full-width pos2" hintLabel="Pick end date">
+                                <input autocomplete="off" mdInput matInput name="someName" formControlName="endDate"
+                                        [dpDayPicker] mode="daytime" closeOnSelect=true theme="dp-material"
+                                        attachTo=".full-width.pos2" />
+                        </mat-form-field>
+                </div>
+                <div class="padding-group">
+                        <b>Simulation Properties:</b>
+                        <mat-form-field class="full-width" hintLabel="Export price in Cent per Wh">
+                                <input formControlName="exportPrice" matInput>
+                        </mat-form-field>
+                        <mat-error>
+                                <span
+                                        *ngIf="!solverInput.get('exportPrice').valid && solverInput.get('exportPrice').touched">Please
+                                        enter a exportPrice !!!</span>
+                        </mat-error>
+                        <mat-form-field class="full-width" hintLabel="Starting Level of the battery in Wh">
+                                <input formControlName="batteryFillLevel" matInput>
+                        </mat-form-field>
+                        <mat-error>
+                                <span
+                                        *ngIf="!solverInput.get('batteryFillLevel').valid && solverInput.get('batteryFillLevel').touched">Please
+                                        enter a batteryFillLevel !!!</span>
+                        </mat-error>
+                </div>
 
-            <mat-form-field class="full-width" hintLabel="Export price in Cent per Wh">  
-                    <input formControlName="exportPrice" matInput placeholder="5">  
-            </mat-form-field>  
-            <mat-error>  
-                    <span *ngIf="!solverInput.get('exportPrice').valid && solverInput.get('exportPrice').touched">Please enter a exportPrice !!!</span>  
-            </mat-error>  
-            <mat-form-field class="full-width" hintLabel="Starting Level of the battery in kWh">  
-                    <input formControlName="batteryFillLevel" matInput placeholder="2000">  
-            </mat-form-field>  
-            <mat-error>  
-                    <span *ngIf="!solverInput.get('batteryFillLevel').valid && solverInput.get('batteryFillLevel').touched">Please enter a batteryFillLevel !!!</span>  
-            </mat-error>
+                <div class="padding-group">
+                        <b>Solver Settings:</b>
+                        <mat-form-field class="full-width" hintLabel="The max range of the solver">
+                                <input formControlName="calculationBound" matInput>
+                        </mat-form-field>
+                        <mat-error>
+                                <span
+                                        *ngIf="!solverInput.get('calculationBound').valid && solverInput.get('calculationBound').touched">Please
+                                        enter a calculationBound</span>
+                        </mat-error>
 
-            <mat-form-field class="full-width" hintLabel="The max range of the solver">  
-                    <input formControlName="calculationBound" matInput placeholder="100">  
-            </mat-form-field>
-            <mat-error>  
-                    <span *ngIf="!solverInput.get('calculationBound').valid && solverInput.get('calculationBound').touched">Please enter a calculationBound</span>  
-            </mat-error>
+                        <mat-form-field class="full-width" hintLabel="The max number of steps for the solver">
+                                <input formControlName="stepCountOverwrite" matInput>
+                        </mat-form-field>
+                        <mat-error>
+                                <span
+                                        *ngIf="!solverInput.get('stepCountOverwrite').valid && solverInput.get('calculationBound').touched">Please enter a for the solver step count</span>
+                        </mat-error>
+                </div>
 
-            <button mat-raised-button color="accent" [disabled]="!solverInput.valid">Submit</button>  
+                <button mat-raised-button color="accent" [disabled]="!solverInput.valid">Submit</button>
 
-</form>
+        </form>
 </mat-card>
 
-<div *ngIf="statusWaiting" id ="center" style="position:fixed;top:50%;left:50%"><mat-spinner></mat-spinner></div>
-
-<div *ngIf="statusCharts" style="width:100%;height:30%;"> <canvas id="canvaschartEnergy">{{chartEnergy}}</canvas></div>
-<div *ngIf="statusCharts" style="width:100%;height:30%;"> <canvas id="canvaschartPrice">{{chartPrice}}</canvas></div>
-<div *ngIf="statusCharts" style="width:100%;height:30%;"> <canvas id="canvaschartBattery">{{chartBattery}}</canvas></div>
+<div *ngIf="statusWaiting" id="center" style="position:fixed;top:50%;left:50%">
+        <mat-spinner></mat-spinner>
+</div>
+<button *ngIf="statusCharts" (click)="toggleTextView()">Switch to text view</button>
+<button *ngIf="!statusCharts" (click)="toggleTextView()">Switch to chart view</button>
+<div [hidden]="!statusCharts" style="width:100%;height:30%;"> <canvas id="canvaschartEnergy">{{chartEnergy}}</canvas>
+</div>
+<div [hidden]="!statusCharts" style="width:100%;height:30%;"> <canvas id="canvaschartPrice">{{chartPrice}}</canvas>
+</div>
+<div [hidden]="!statusCharts" style="width:100%;height:30%;"> <canvas id="canvaschartBattery">{{chartBattery}}</canvas>
+</div>

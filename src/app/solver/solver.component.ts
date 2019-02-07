@@ -20,6 +20,7 @@ export class SolverComponent implements OnInit {
   exportPrice:number;
   batteryFillLevel:number;
   calculationBound : number;
+  stepCountOverwrite: number;
 
   statusFormFill = true;
   statusWaiting = false;
@@ -39,13 +40,23 @@ export class SolverComponent implements OnInit {
       endDate: ['' , Validators.required],
       exportPrice: ['', Validators.required],
       batteryFillLevel: ['', Validators.required],
-      calculationBound: ['', Validators.required]
+      calculationBound: ['', Validators.required],
+      stepCountOverwrite: ['']
     });
    }
 
   ngOnInit() {
     var now = moment();
     var inFourHours = moment(now).add(4,'hour');
+
+    this.solverInput.patchValue({
+      stepCountOverwrite: 4,
+      startDate : now,
+      endDate : inFourHours,
+      exportPrice : 5,
+      batteryFillLevel : 0,
+      calculationBound : 1000
+    })
     //this.initCharts();
     //this.startDatePlaceHolderText = this._dateFormatPipe.transform(now);
     //this.endDatePlaceHolderText = this._dateFormatPipe.transform(inFourHours);
@@ -59,6 +70,10 @@ export class SolverComponent implements OnInit {
     return "rgb(" + r + "," + g + "," + b + ")";
 }
 
+  toggleTextView(){
+    
+  }
+
   onSubmit(form:any){
     console.log(form);
     this.statusFormFill = false;
@@ -68,8 +83,6 @@ export class SolverComponent implements OnInit {
       console.log(solverSolution);
       this.statusWaiting = false;
       this.statusCharts = true;
-      //Wait for the ngIf to take effect
-      setTimeout(() => {
       this.initCharts();
       solverSolution = (solverSolution as SolverSolution); 
       let supplyData = { 
@@ -197,7 +210,6 @@ export class SolverComponent implements OnInit {
       console.log(this.chartEnergy);
       console.log(this.chartPrice);
       console.log(this.chartBattery);
-    });
     });
   }
 

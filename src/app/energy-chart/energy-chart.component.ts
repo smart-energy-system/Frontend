@@ -202,6 +202,12 @@ export class EnergyChartComponent implements OnInit {
       scales: {
         xAxes: [{
             type: 'time',
+            scaleLabel: {
+              fontSize: 14
+            },
+            ticks: {
+              fontSize: 14
+          }
           //    time: {
           //      unit: 'hour'
           //  }
@@ -211,8 +217,12 @@ export class EnergyChartComponent implements OnInit {
           stacked: false, // if enabeld than remove fill form data sets
            scaleLabel: {
              display: true,
-             labelString: 'Unit: W'
-           }
+             labelString: 'Unit: W',
+             fontSize: 14
+           },
+           ticks: {
+            fontSize: 14
+        }
         }]
     }
     }
