@@ -46,6 +46,7 @@ export class SolverComponent implements OnInit {
   ngOnInit() {
     var now = moment();
     var inFourHours = moment(now).add(4,'hour');
+    //this.initCharts();
     //this.startDatePlaceHolderText = this._dateFormatPipe.transform(now);
     //this.endDatePlaceHolderText = this._dateFormatPipe.transform(inFourHours);
     //let htmlRef = this.elementRef.nativeElement.querySelector(`#canvaschartEnergy`);
@@ -67,6 +68,8 @@ export class SolverComponent implements OnInit {
       console.log(solverSolution);
       this.statusWaiting = false;
       this.statusCharts = true;
+      //Wait for the ngIf to take effect
+      setTimeout(() => {
       this.initCharts();
       solverSolution = (solverSolution as SolverSolution); 
       let supplyData = { 
@@ -125,7 +128,7 @@ export class SolverComponent implements OnInit {
       };
       let batteryChargeRate = { 
         data: [],
-        label: "Battery Discharge Rate",
+        label: "Battery Charge Rate",
         borderColor: this.randomColor(),
         fill: false
       };
@@ -166,8 +169,13 @@ export class SolverComponent implements OnInit {
         batteryFillLevel.data.push({x:counter, y:solverSolutionStep.batteryFillLevel});
         importCost.data.push({x:counter, y:solverSolutionStep.importCost});
         exportProfit.data.push({x:counter, y:solverSolutionStep.exportProfit});
+        batteryDisChargeRate.data.push({x:counter,y:solverSolutionStep.discargeRate})
+
+        this.chartEnergy.data.labels.push(counter);
+        this.chartPrice.data.labels.push(counter);
+        this.chartBattery.data.labels.push(counter);
         counter++;
-        console.log("Fore each");
+        console.log("Fore each:"+ counter);
       })
       this.chartEnergy.data.datasets.push(supplyData);
       this.chartEnergy.data.datasets.push(homeConsumer);
@@ -177,6 +185,7 @@ export class SolverComponent implements OnInit {
       this.chartEnergy.data.datasets.push(negShiftHome);
       this.chartEnergy.data.datasets.push(negShiftOffice);
       this.chartEnergy.data.datasets.push(batteryChargeRate);
+      this.chartEnergy.data.datasets.push(batteryDisChargeRate);
 
       this.chartPrice.data.datasets.push(importCost);
       this.chartPrice.data.datasets.push(exportProfit);
@@ -188,6 +197,7 @@ export class SolverComponent implements OnInit {
       console.log(this.chartEnergy);
       console.log(this.chartPrice);
       console.log(this.chartBattery);
+    });
     });
   }
 
@@ -203,13 +213,20 @@ export class SolverComponent implements OnInit {
     this.chartBattery = this.getChart(htmlRef3, "Battery", "kWh");
   }
 
+/*   ngAfterViewInit() {
+    if(this.statusWaiting){
+      this.initCharts();
+    }
 
+  } */
 
 
   private getChart(htmlRef: any,text: string, unit : string) : Chart {
     return new Chart(htmlRef, {
       type: 'line',
-      data: {},
+      data: {
+        //labels: ["Red", "Blue", "Yellow"],
+        datasets: []},
       options: {
         title: {
           display: true,
