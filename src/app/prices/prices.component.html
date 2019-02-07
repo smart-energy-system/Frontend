@@ -1,3 +1,47 @@
-<p>
-  prices works!
-</p>
+<!-- sample component for usage-->
+<mat-accordion multi="true">
+    <mat-expansion-panel class="expansionpanel">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Prices</mat-panel-title>
+            <mat-panel-description>show energy prices</mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="prices-form-container">
+            <button mat-raised-button matInput (click)="dataChange()">Show prices</button>
+            <mat-form-field>
+                <input matInput placeholder="start date" [(ngModel)]="min" [owlDateTimeTrigger]="dtStart" [owlDateTime]="dtStart" />
+                <owl-date-time #dtStart></owl-date-time>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="end date" [(ngModel)]="max" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" />
+                <owl-date-time #dt></owl-date-time>
+            </mat-form-field>
+        </div>
+        <form class="radiobutton-container" [formGroup]="options">
+            <div>
+                <mat-radio-group formControlName="floatLabel">
+                    <mat-radio-button value="chart">Bar chart</mat-radio-button>
+                    <mat-radio-button value="table">Table</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </form>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="expansionpanel" *ngIf="dataLabels">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Data Labels</mat-panel-title>
+            <mat-panel-description>Select the labels to show</mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="prices-form-container">
+            <mat-list>
+                <mat-list-item *ngFor="let label of dataLabels">
+                    <mat-checkbox checked="true" (change)="changeLabelCheckbox($event, label)">{{ label }}</mat-checkbox>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </mat-expansion-panel>
+
+    
+</mat-accordion>
+<ng-container *ngIf="xLabels && data">
+    <prices-chart #chart [data]="data" [xLabels]="xLabels" [format]="'%y-%m-%d'"></prices-chart>
+</ng-container>
