@@ -1,3 +1,51 @@
-<p>
-  prices works!
-</p>
+<!-- sample component for usage-->
+<mat-accordion multi="true">
+    <mat-expansion-panel class="expansionpanel">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Prices</mat-panel-title>
+            <mat-panel-description>show energy prices</mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="prices-form-container">
+            <button mat-raised-button matInput (click)="dataChange()">Show prices</button>
+            <mat-form-field>
+                <input matInput placeholder="start date" [(ngModel)]="min" [owlDateTimeTrigger]="dtStart" [owlDateTime]="dtStart" />
+                <owl-date-time #dtStart></owl-date-time>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="end date" [(ngModel)]="max" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" />
+                <owl-date-time #dt></owl-date-time>
+            </mat-form-field>
+        </div>
+        <form class="radiobutton-container" [formGroup]="options">
+            <div>
+                <mat-radio-group formControlName="floatLabel">
+                    <mat-radio-button value="chart">Bar chart</mat-radio-button>
+                    <mat-radio-button value="table">Table</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </form>
+    </mat-expansion-panel>
+
+    
+</mat-accordion>
+<ng-container *ngIf="xLabels && data && options.controls.floatLabel.value == 'chart'">
+    <prices-chart #chart [data]="data" [xLabels]="xLabels" [format]="'%Y-%m-%dT%H:%M+0000'"></prices-chart>
+</ng-container>
+<mat-card class="margin:2rem" *ngIf="xLabels && data && options.controls.floatLabel.value == 'table'">
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.date | date:'short'}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.price | currency:'EUR'}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="oldValue">
+            <mat-header-cell *matHeaderCellDef>Old value</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.oldValue}}</mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</mat-card>

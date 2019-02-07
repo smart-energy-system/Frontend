@@ -5,12 +5,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import {MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule,MatCardModule,MatMenuModule,MatFormFieldModule,MatDatepickerModule,
   MatNativeDateModule,MatSelectModule,MatOptionModule,MatSlideToggleModule} from '@angular/material';
+//import {MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule} from '@angular/material';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+//import { MatTableModule } from '@angular/material/table';
+//import { MatCardModule } from '@angular/material/card';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BatterieComponent } from './batterieoverview/batterie/batterie.component';
+import { ChartComponent } from './prices/chart/chart.component';
 import { PricesComponent } from './prices/prices.component';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { SupplieroverviewComponent } from './supplieroverview/supplieroverview.component';
 import { NewsupplierComponent } from './supplieroverview/newsupplier/newsupplier.component';
 import { ConsumeroverviewComponent } from './consumeroverview/consumeroverview.component';
@@ -22,7 +28,7 @@ import { PhotovoltaicpanelComponent } from './supplieroverview/photovoltaicpanel
 import { HomeComponent } from './consumeroverview/home/home.component';
 import { OfficebuildingComponent } from './consumeroverview/officebuilding/officebuilding.component';
 import { EnergyChartComponent } from './energy-chart/energy-chart.component';
-import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup } from "@angular/forms";
 import { MatRadioModule} from '@angular/material/radio';
 import { MatInputModule} from '@angular/material/input';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
@@ -39,6 +45,7 @@ import {  MatPaginatorModule,
     DashboardComponent,
     BatterieComponent,
     PricesComponent,
+    ChartComponent,
     SupplieroverviewComponent,
     NewsupplierComponent,
     ConsumeroverviewComponent,
@@ -63,6 +70,8 @@ import {  MatPaginatorModule,
     MatSidenavModule,
     MatListModule,
     MatIconModule,
+    MatTableModule,
+    MatCardModule,
     ReactiveFormsModule,
     FormsModule,
     MatRadioModule,
@@ -80,7 +89,12 @@ import {  MatPaginatorModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-MatProgressSpinnerModule
+MatProgressSpinnerModule,
+    MatExpansionModule,
+    MatCheckboxModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    LeafletModule.forRoot()
   ],
   exports: [  
     MatButtonModule,  
