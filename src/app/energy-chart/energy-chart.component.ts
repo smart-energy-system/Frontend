@@ -12,7 +12,7 @@ export class EnergyChartComponent implements OnInit {
 
   toggleForecastButtonText = "5 Day History";
   toggleStackedtButtonText = "Stacked Mode";
-  toggleLogModeButtonText = "Linear";
+  toggleLogModeButtonText = "Logarithmic";
   forecastMode = true;
   chart : any;
   chartDataSet : any;
@@ -65,7 +65,7 @@ export class EnergyChartComponent implements OnInit {
           console.log("Get data for:"+ entry.id)
           let data = { 
             data: [],
-            label: entitiytype + entry.id,
+            label: entry.displayName,
             borderColor: this.randomColor(),
             fill: false
             };
@@ -79,7 +79,7 @@ export class EnergyChartComponent implements OnInit {
             this.supplierSummed = this.updateSumm(type, forecast,this.supplierSummed, label);
           }
           else {
-            label = "Consumer";
+            label = "All Consumer";
             this.consumerSummed = this.updateSumm(type, forecast,this.consumerSummed, label);
           }
           this.updateDifference();
