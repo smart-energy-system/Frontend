@@ -110,9 +110,8 @@
 <div [hidden]="!statusCharts">
         <button (click)="toggleTextInTable()">Toogle Text</button>
 </div>
-
-<div [hidden]="true" class="padded-width">
-        <table mat-table [dataSource]="tableElemntSolutionSteps" class="mat-elevation-z8">
+<div class="padded-width">
+        <table [hidden]="!statusText" mat-table [dataSource]="tableElemntSolutionSteps" class="mat-elevation-z8">
 
                 <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->

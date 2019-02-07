@@ -1,21 +1,21 @@
 <div class="page">
     <mat-nav-list id="sidebar" class="page__sidebar">
-      <mat-list-item class="sidebarelement" *ngFor="let windturbine of windturbines | keyvalue">
-        <div class="elementleft" [routerLink]="['/supplier/windTurbines', windturbine.key]">
-          {{windturbines[windturbine.key]['displayName']}}
+      <mat-list-item class="sidebarelement" *ngFor="let windturbine of windturbines">
+        <div class="elementleft" [routerLink]="['/supplier/windTurbines', windturbine.id]">
+          {{windturbine.displayName}}
         </div>
         <div class="elementright">
-          <button mat-icon-button (click)="deleteWindTurbine(windturbine.key)">
+          <button mat-icon-button (click)="deleteWindTurbine(windturbine.id)">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
       </mat-list-item>
-      <mat-list-item class="sidebarelement" *ngFor="let photovoltaicPanel of photovoltaicPanels | keyvalue">
-        <div class="elementleft" [routerLink]="['/supplier/photovoltaicPanels', photovoltaicPanel.key]">
-          {{photovoltaicPanels[photovoltaicPanel.key]['displayName']}}
+      <mat-list-item class="sidebarelement" *ngFor="let photovoltaicPanel of photovoltaicPanels">
+        <div class="elementleft" [routerLink]="['/supplier/photovoltaicPanels', photovoltaicPanel.id]">
+          {{photovoltaicPanel.displayName}}
         </div>
         <div class="elementright">
-          <button mat-icon-button (click)="deletePhotovoltaicPanel(photovoltaicPanel.key)">
+          <button mat-icon-button (click)="deletePhotovoltaicPanel(photovoltaicPanel.id)">
             <mat-icon>delete</mat-icon>
           </button>
         </div>

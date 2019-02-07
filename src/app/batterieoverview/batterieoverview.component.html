@@ -1,10 +1,10 @@
 <div class="page">
   <mat-nav-list id="sidebar" class="page__sidebar">
-    <mat-list-item class="sidebarelement" *ngFor="let batterie of batteries | keyvalue">
-      <div class="elementleft" [routerLink]="['/batteries', batterie.key]">
-        {{batteries[batterie.key]['displayName']}}
+    <mat-list-item class="sidebarelement" *ngFor="let batterie of batteries">
+      <div class="elementleft" [routerLink]="['/batteries', batterie.id]">
+        {{batterie.displayName}}
       </div>
-      <div class="elementright" (click)="deleteBatterie(batterie.key)">
+      <div class="elementright" (click)="deleteBatterie(batterie.id)">
       <button mat-icon-button>
         <mat-icon>delete</mat-icon>
       </button>
