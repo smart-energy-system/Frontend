@@ -19,7 +19,7 @@ export class PricesComponent implements OnInit {
     options: FormGroup;
     prices: any[];
 
-    displayedColumns: string[] = ['date', 'price', 'oldValue'];
+    displayedColumns: string[] = ['date', 'price', 'oldValue', 'timeOfRetrieval'];
     dataSource: any = [];
 
     constructor(private fb: FormBuilder, private dataService: DataService, private _dateFormatPipe: DateFormatPipe) {
@@ -32,18 +32,20 @@ export class PricesComponent implements OnInit {
     dataChange() {
         this.dataService.getPrices(this._dateFormatPipe.transform(this.min), this._dateFormatPipe.transform(this.max)).subscribe((prices: any[]) => {
             this.prices = prices;
+            const tor: string = new Date().toISOString();
             const tempTable = [];
             const dataList: any[][] = [];
             const tempBarChartPrice = [];
             const tempBarChartTime = [];
             tempBarChartTime.push('x');
-            tempBarChartPrice.push('Price');
+            tempBarChartPrice.push('Price per MWh in Euro');
             this.prices.forEach((element: any) => {
                 tempTable.push(
                     {
                         date: element.time,
                         price: element.priceInEuroPerMWh,
-                        oldValue: element.oldValue
+                        oldValue: element.oldValue,
+                        timeOfRetrieval: tor
                     }
                 );
                 tempBarChartPrice.push(element.priceInEuroPerMWh);

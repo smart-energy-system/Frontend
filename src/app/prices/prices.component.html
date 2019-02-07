@@ -8,7 +8,8 @@
         <div class="prices-form-container">
             <button mat-raised-button matInput (click)="dataChange()">Show prices</button>
             <mat-form-field>
-                <input matInput placeholder="start date" [(ngModel)]="min" [owlDateTimeTrigger]="dtStart" [owlDateTime]="dtStart" />
+                <input matInput placeholder="start date" [(ngModel)]="min" [owlDateTimeTrigger]="dtStart"
+                    [owlDateTime]="dtStart" />
                 <owl-date-time #dtStart></owl-date-time>
             </mat-form-field>
             <mat-form-field>
@@ -26,7 +27,7 @@
         </form>
     </mat-expansion-panel>
 
-    
+
 </mat-accordion>
 <ng-container *ngIf="xLabels && data && options.controls.floatLabel.value == 'chart'">
     <prices-chart #chart [data]="data" [xLabels]="xLabels" [format]="'%Y-%m-%dT%H:%M+0000'"></prices-chart>
@@ -38,12 +39,16 @@
             <mat-cell *matCellDef="let element">{{element.date | date:'short'}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="price">
-            <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>Price per MWh in Euro</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.price | currency:'EUR'}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="oldValue">
             <mat-header-cell *matHeaderCellDef>Old value</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.oldValue}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="timeOfRetrieval">
+            <mat-header-cell *matHeaderCellDef>Time of Retrieval</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.timeOfRetrieval | date:'short'}}</mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
