@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { ChartComponent } from './chart/chart.component';
 import { DataService } from '../data.service';
-import { HttpClient } from "@angular/common/http";
 import { DateFormatPipe } from '../dateFormatPipe';
 @Component({
     selector: 'app-prices',
@@ -13,84 +12,51 @@ import { DateFormatPipe } from '../dateFormatPipe';
 export class PricesComponent implements OnInit {
     @Input() data: any;
     @Input() dataLabels: string[];
-    @Input() xLabels: string[] = [
-        'x',
-        '2018-11-29',
-        '2018-11-30',
-        '2018-12-01',
-        '2018-12-02',
-        '2018-12-03',
-        '2018-12-04',
-        '2018-12-05',
-        '2018-12-06',
-        '2018-12-07',
-        '2018-12-08',
-        '2018-12-09',
-        '2018-12-10',
-        '2018-12-11',
-        '2018-12-12',
-        '2018-12-13',
-        '2018-12-14',
-        '2018-12-15',
-        '2018-12-16',
-        '2018-12-17'
-    ];
+    @Input() xLabels: string[];
     @ViewChild('chart') chart: ChartComponent;
     min: Date;
     max: Date;
     options: FormGroup;
+    prices: any[];
 
-    displayedColumns: string[] = ['date', 'price'];
-    dataSource = [
-        { date: '2018-12-02', price: 40},
-        { date: '2018-12-03', price: 30}
-    ];
+    displayedColumns: string[] = ['date', 'price', 'oldValue'];
+    dataSource: any = [];
 
-    constructor(private fb: FormBuilder, private dataService: DataService,private _dateFormatPipe:DateFormatPipe ) {
+    constructor(private fb: FormBuilder, private dataService: DataService, private _dateFormatPipe: DateFormatPipe) {
         this.options = fb.group({
             floatLabel: 'chart'
         });
     }
 
-    // changeLabelCheckbox(event: { checked: any }, label: any) {
-    //     if (event.checked) {
-    //         this.chart.showData(label);
-    //     } else {
-    //         this.chart.hideData(label);
-    //     }
-    // }
-
     // [TODO] call rest api to get required data
     dataChange() {
-        // TODO fix request
-        this.dataService.getPrices(this._dateFormatPipe.transform(this.min), this._dateFormatPipe.transform(this.max)).subscribe((prices) => {
-            alert(prices);
+        this.dataService.getPrices(this._dateFormatPipe.transform(this.min), this._dateFormatPipe.transform(this.max)).subscribe((prices: any[]) => {
+            this.prices = prices;
+            const tempTable = [];
+            const dataList: any[][] = [];
+            const tempBarChartPrice = [];
+            const tempBarChartTime = [];
+            tempBarChartTime.push('x');
+            tempBarChartPrice.push('Price');
+            this.prices.forEach((element: any) => {
+                tempTable.push(
+                    {
+                        date: element.time,
+                        price: element.priceInEuroPerMWh,
+                        oldValue: element.oldValue
+                    }
+                );
+                tempBarChartPrice.push(element.priceInEuroPerMWh);
+                tempBarChartTime.push(element.time);
+            });
+            this.dataSource = tempTable;
+            dataList.push(tempBarChartTime);
+            dataList.push(tempBarChartPrice);
+            this.data = dataList;
+            this.dataLabels = tempBarChartTime;
+            this.xLabels = tempBarChartTime;
+            // console.log(this.dataSource);
         });
-
-        const nrOfDataLines = this.randomIntFromInterval(2, 5);
-        const dataList: any[][] = [];
-
-        for (let i = 0; i < nrOfDataLines; i++) {
-            const dataPoints: any[] = [];
-            dataPoints.push('data' + i);
-            const nrOfDataPoints = this.randomIntFromInterval(10, 20);
-            for (let j = 0; j < nrOfDataPoints; j++) {
-                dataPoints.push(this.randomIntFromInterval(0, 100));
-            }
-            dataList.push(dataPoints);
-        }
-
-        this.data = dataList;
-        this.dataLabels = this.getDataLablesFromDataList(dataList);
-    }
-    getDataLablesFromDataList(data: any[]) {
-        return data.map(d => d[0]);
-    }
-    /*
-     *  min and max included
-     */
-    randomIntFromInterval(min: number, max: number) {
-        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
     ngOnInit() {

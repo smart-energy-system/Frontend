@@ -16,40 +16,13 @@ export class ChartComponent implements OnChanges {
     constructor() {}
 
     ngOnChanges() {
+        console.log(this.data, this.format)
         
         this.chart = c3.generate({
             data: {
                 x: 'x',
-                columns: [
-                    [
-                        'x',
-                        '2018-11-29',
-                        '2018-11-30',
-                        '2018-12-01',
-                        '2018-12-02',
-                        '2018-12-03',
-                        '2018-12-04',
-                        '2018-12-05',
-                        '2018-12-06',
-                        '2018-12-07',
-                        '2018-12-08',
-                        '2018-12-09',
-                        '2018-12-10',
-                        '2018-12-11',
-                        '2018-12-12',
-                        '2018-12-13',
-                        '2018-12-14',
-                        '2018-12-15',
-                        '2018-12-16',
-                        '2018-12-17',
-                        '2018-12-18',
-                        '2018-12-19',
-                        '2018-12-20',
-                        '2018-12-21',
-                        '2018-12-22',
-                    ],
-                    ['data1', 30, 40, 60, 20, 15, 35, 30, 40, 60, 20, 15, 35, 30, 40, 60, 20, 15, 35, 30, 40, 60, 20, 15, 35],
-                ],
+                xFormat: this.format,
+                columns: this.data,
                 type: 'bar',
             },
             bar: {
@@ -63,7 +36,7 @@ export class ChartComponent implements OnChanges {
                 x: {
                     type: 'timeseries',
                     tick: {
-                        format: this.format
+                        format: '%Y-%m-%d %H:%M'
                     }
                 },
             }
