@@ -31,12 +31,12 @@
             <mat-error>  
                 <span *ngIf="!solverInput.get('endDate').valid && solverInput.get('endDate').touched">Please enter Last Name !!!</span>  
             </mat-error>   -->
-            <mat-form-field class="full-width pos1">  
-            <input autocomplete="off" mdInput  matInput name="someName" formControlName="endDate" [dpDayPicker]  mode="daytime" closeOnSelect=true theme="dp-material" attachTo=".full-width.pos1" />  
+            <mat-form-field class="full-width pos1" hintLabel="Pick start date">  
+            <input autocomplete="off" mdInput  matInput name="someName" formControlName="startDate" [dpDayPicker]  mode="daytime" closeOnSelect=true theme="dp-material" attachTo=".full-width.pos1" />  
             </mat-form-field> 
 
-            <mat-form-field class="full-width pos2">  
-                    <input autocomplete="off" mdInput  matInput name="someName" formControlName="startDate" [dpDayPicker]  mode="daytime" closeOnSelect=true theme="dp-material" attachTo=".full-width.pos2" />  
+            <mat-form-field class="full-width pos2" hintLabel="Pick end date">  
+                    <input autocomplete="off" mdInput  matInput name="someName" formControlName="endDate" [dpDayPicker]  mode="daytime" closeOnSelect=true theme="dp-material" attachTo=".full-width.pos2" />  
             </mat-form-field> 
 
 
@@ -44,17 +44,29 @@
                     <input formControlName="exportPrice" matInput placeholder="5">  
             </mat-form-field>  
             <mat-error>  
-                    <span *ngIf="!solverInput.get('exportPrice').valid && solverInput.get('exportPrice').touched">Please enter Last Name !!!</span>  
+                    <span *ngIf="!solverInput.get('exportPrice').valid && solverInput.get('exportPrice').touched">Please enter a exportPrice !!!</span>  
             </mat-error>  
             <mat-form-field class="full-width" hintLabel="Starting Level of the battery in kWh">  
                     <input formControlName="batteryFillLevel" matInput placeholder="2000">  
             </mat-form-field>  
             <mat-error>  
-                    <span *ngIf="!solverInput.get('batteryFillLevel').valid && solverInput.get('batteryFillLevel').touched">Please enter Last Name !!!</span>  
-            </mat-error> 
+                    <span *ngIf="!solverInput.get('batteryFillLevel').valid && solverInput.get('batteryFillLevel').touched">Please enter a batteryFillLevel !!!</span>  
+            </mat-error>
+
+            <mat-form-field class="full-width" hintLabel="The max range of the solver">  
+                    <input formControlName="calculationBound" matInput placeholder="100">  
+            </mat-form-field>
+            <mat-error>  
+                    <span *ngIf="!solverInput.get('calculationBound').valid && solverInput.get('calculationBound').touched">Please enter a calculationBound</span>  
+            </mat-error>
+
             <button mat-raised-button color="accent" [disabled]="!solverInput.valid">Submit</button>  
 
 </form>
 </mat-card>
 
 <div *ngIf="statusWaiting" id ="center" style="position:fixed;top:50%;left:50%"><mat-spinner></mat-spinner></div>
+
+<div style="width:100%;height:30%;"> <canvas id="canvaschartEnergy">{{chartEnergy}}</canvas></div>
+<div style="width:100%;height:30%;"> <canvas id="canvaschartPrice">{{chartPrice}}</canvas></div>
+<div style="width:100%;height:30%;"> <canvas id="canvaschartBattery">{{chartBattery}}</canvas></div>

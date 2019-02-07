@@ -1,52 +1,246 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ElementRef} from '@angular/core';
 import { FormGroup, FormBuilder, Validators,NgForm  } from '@angular/forms';
 import * as moment from 'moment';
 import { DateFormatPipe } from '../dateFormatPipe';
-
+import { SolverFetchService } from '../solver-fetch.service';
+import { Chart } from 'chart.js';
+import { SolverSolution } from '../solverSolution';
 @Component({
   selector: 'app-solver',
   templateUrl: './solver.component.html',
   styleUrls: ['./solver.component.css']
 })
 export class SolverComponent implements OnInit {
-  startDatePlaceHolderText : string;
-  endDatePlaceHolderText : string;
+  
+  //startDatePlaceHolderText : string;
+  //endDatePlaceHolderText : string;
   solverInput: FormGroup;
   startDate : moment.Moment
-  //startTime : string;
   endDate : moment.Moment
   exportPrice:number;
   batteryFillLevel:number;
+  calculationBound : number;
 
   statusFormFill = true;
   statusWaiting = false;
+  statusCharts = false;
+
+  chartEnergy : any;
+  chartPrice : any;
+  chartBattery : any;
 
   config = {
     mode: "time"
   };
 
-  constructor(private formBuilder: FormBuilder,private _dateFormatPipe:DateFormatPipe) {
+  constructor(private formBuilder: FormBuilder,private _dateFormatPipe:DateFormatPipe,private solverFetchService: SolverFetchService,private elementRef: ElementRef) {
     this.solverInput = this.formBuilder.group({
       startDate: ['' , Validators.required],
       endDate: ['' , Validators.required],
       exportPrice: ['', Validators.required],
-      batteryFillLevel: ['', Validators.required]
+      batteryFillLevel: ['', Validators.required],
+      calculationBound: ['', Validators.required]
     });
    }
 
   ngOnInit() {
     var now = moment();
     var inFourHours = moment(now).add(4,'hour');
-    this.startDatePlaceHolderText = this._dateFormatPipe.transform(now);
-    this.endDatePlaceHolderText = this._dateFormatPipe.transform(inFourHours);
+    //this.startDatePlaceHolderText = this._dateFormatPipe.transform(now);
+    //this.endDatePlaceHolderText = this._dateFormatPipe.transform(inFourHours);
+    //let htmlRef = this.elementRef.nativeElement.querySelector(`#canvaschartEnergy`);
+    //console.log(htmlRef);
   }
+  randomColor(){
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    return "rgb(" + r + "," + g + "," + b + ")";
+}
 
-  onSubmit(form:NgForm){
+  onSubmit(form:any){
     console.log(form);
     this.statusFormFill = false;
     this.statusWaiting = true;
+    console.log("StartDate:"+ form.startDate + " EndDate:"+ form.endDate);
+    this.solverFetchService.getSolution(form.startDate,form.endDate,form.calculationBound, form.exportPrice).subscribe(solverSolution => {
+      console.log(solverSolution);
+      this.statusWaiting = false;
+      this.statusCharts = true;
+      this.initCharts();
+      solverSolution = (solverSolution as SolverSolution); 
+      let supplyData = { 
+        data: [],
+        label: "Supply",
+        borderColor: this.randomColor(),
+        fill: false
+        };
+      let homeConsumer = { 
+        data: [],
+        label: "Home Demand",
+        borderColor: this.randomColor(),
+        fill: false
+      };
+      let officeConsumer = { 
+        data: [],
+        label: "Office Demand",
+        borderColor: this.randomColor(),
+        fill: false
+      };
+      let gridImport = { 
+              data: [],
+              label: "Grid Import",
+              borderColor: this.randomColor(),
+              fill: false
+      };
+      let positivShiftHome = { 
+                data: [],
+                label: "Postiv Demand Shift Home",
+                borderColor: this.randomColor(),
+                fill: false
+      };
+      let positivShiftOffice = { 
+        data: [],
+        label: "Positiv Demand Shift Office",
+        borderColor: this.randomColor(),
+        fill: false
+      };
+      let negShiftHome = { 
+        data: [],
+        label: "Negativ Demand Shift Home",
+        borderColor: this.randomColor(),
+        fill: false
+      };
+      let negShiftOffice = { 
+        data: [],
+        label: "Negativ Demand Shift Office",
+        borderColor: this.randomColor(),
+        fill: false
+      };
+      let batteryDisChargeRate = { 
+        data: [],
+        label: "Battery Discharge Rate",
+        borderColor: this.randomColor(),
+        fill: false
+      };
+      let batteryChargeRate = { 
+        data: [],
+        label: "Battery Discharge Rate",
+        borderColor: this.randomColor(),
+        fill: false
+      };
+
+      // Battery Fill level
+      let batteryFillLevel = { 
+        data: [],
+        label: "Battery Level",
+        borderColor: this.randomColor(),
+        fill: false
+      };
+
+      //Preise
+      let importCost = { 
+        data: [],
+        label: "Import Cost",
+        borderColor: this.randomColor(),
+        fill: false
+      };
+
+      let exportProfit = { 
+        data: [],
+        label: "Export Profit",
+        borderColor: this.randomColor(),
+        fill: false
+      };
+      let counter = 0;
+      solverSolution.solutionSteps.forEach(solverSolutionStep => {
+        supplyData.data.push({x:counter, y:solverSolutionStep.ps})
+        homeConsumer.data.push({x:counter, y:solverSolutionStep.pd[0]});
+        officeConsumer.data.push({x:counter, y:solverSolutionStep.pd[1]});
+        gridImport.data.push({x:counter, y:solverSolutionStep.pg})
+        positivShiftHome.data.push({x:counter, y:solverSolutionStep.pposShift[0]});
+        positivShiftOffice.data.push({x:counter, y:solverSolutionStep.pposShift[1]});
+        negShiftHome.data.push({x:counter, y:solverSolutionStep.pnegShift[0]});
+        negShiftOffice.data.push({x:counter, y:solverSolutionStep.pnegShift[1]});
+        batteryChargeRate.data.push({x:counter, y:solverSolutionStep.chargeRate});
+        batteryFillLevel.data.push({x:counter, y:solverSolutionStep.batteryFillLevel});
+        importCost.data.push({x:counter, y:solverSolutionStep.importCost});
+        exportProfit.data.push({x:counter, y:solverSolutionStep.exportProfit});
+        counter++;
+        console.log("Fore each");
+      })
+      this.chartEnergy.data.datasets.push(supplyData);
+      this.chartEnergy.data.datasets.push(homeConsumer);
+      this.chartEnergy.data.datasets.push(officeConsumer);
+      this.chartEnergy.data.datasets.push(positivShiftHome);
+      this.chartEnergy.data.datasets.push(positivShiftOffice);
+      this.chartEnergy.data.datasets.push(negShiftHome);
+      this.chartEnergy.data.datasets.push(negShiftOffice);
+      this.chartEnergy.data.datasets.push(batteryChargeRate);
+
+      this.chartPrice.data.datasets.push(importCost);
+      this.chartPrice.data.datasets.push(exportProfit);
+      this.chartBattery.data.datasets.push(batteryFillLevel);
+
+      this.chartEnergy.update();
+      this.chartPrice.update();
+      this.chartBattery.update();
+      console.log(this.chartEnergy);
+      console.log(this.chartPrice);
+      console.log(this.chartBattery);
+    });
   }
 
-  
+  initCharts(){
+    let htmlRef = this.elementRef.nativeElement.querySelector(`#canvaschartEnergy`);
+    console.log(htmlRef);
+    this.chartEnergy = this.getChart(htmlRef, "Import Export","kW");
+    let htmlRef2 = this.elementRef.nativeElement.querySelector(`#canvaschartPrice`);
+    console.log(htmlRef2);
+    this.chartPrice = this.getChart(htmlRef2, "Cost vs Profit", "Cent");
+    let htmlRef3 = this.elementRef.nativeElement.querySelector(`#canvaschartBattery`);
+    console.log(htmlRef3);
+    this.chartBattery = this.getChart(htmlRef3, "Battery", "kWh");
+  }
 
+
+
+
+  private getChart(htmlRef: any,text: string, unit : string) : Chart {
+    return new Chart(htmlRef, {
+      type: 'line',
+      data: {},
+      options: {
+        title: {
+          display: true,
+          text: text,
+          fontSize: 20
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 0 },
+        legend: {
+          position: 'right',
+          labels: {
+            fontSize: 20
+          }
+        },
+        scales: {
+          yAxes: [{
+            type: 'linear',
+            scaleLabel: {
+              display: true,
+              labelString: 'Unit: ' + unit,
+            }
+          }],
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: "Timestep",
+            }
+        }]
+        }
+      }
+    });
+  }
 }
