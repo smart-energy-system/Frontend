@@ -49,7 +49,7 @@
                 </div>
                 <div class="padding-group">
                         <b>Simulation Properties:</b>
-                        <mat-form-field class="full-width" hintLabel="Export price in Cent per Wh">
+                        <mat-form-field class="full-width" hintLabel="Export price in Cent per kWh">
                                 <input formControlName="exportPrice" matInput>
                         </mat-form-field>
                         <mat-error>
@@ -135,7 +135,7 @@
                                 So the total demand is {{element.variables.pd[0]+element.variables.pd[1]}} All Supplier
                                 provide {{element.variables.ps}} kW. This results in a difference of
                                 {{element.variables.ps-(element.variables.pd[0]+element.variables.pd[1])}} kW<br>.
-                                
+
                         </td>
                 </ng-container>
 
