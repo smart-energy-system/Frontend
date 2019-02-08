@@ -140,7 +140,7 @@ export class SolverComponent implements OnInit {
     this.statusFormFill = false;
     this.statusWaiting = true;
     console.log("StartDate:"+ form.startDate + " EndDate:"+ form.endDate);
-    this.solverFetchService.getSolution(form.startDate,form.endDate,form.calculationBound, form.exportPrice,form.stepCountOverwrite,form.timeout).subscribe(solverSolution => {
+    this.solverFetchService.getSolution(form.startDate,form.endDate,form.calculationBound, form.exportPrice,form.stepCountOverwrite,form.timeout,form.batteryFillLevel).subscribe(solverSolution => {
       this.solverSolution = (solverSolution as SolverSolution);
       console.log(solverSolution);
       this.statusWaiting = false;
