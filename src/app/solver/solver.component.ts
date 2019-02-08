@@ -32,6 +32,7 @@ export class SolverComponent implements OnInit {
   batteryFillLevel:number;
   calculationBound : number;
   stepCountOverwrite: number;
+  timeout : number;
 
   statusFormFill = true;
   statusWaiting = false;
@@ -45,6 +46,8 @@ export class SolverComponent implements OnInit {
   tableElemntSolutionSteps : TableElemntSolutionStep[] = [];
 
   @ViewChild(MatTable) table: MatTable<any>;
+
+  toggleTextButtonText : string = "Swtich to Table"
 
   textVisable: boolean = false;
   displayedColumnsText : string[] = ['step', 'text'];
@@ -73,7 +76,8 @@ export class SolverComponent implements OnInit {
       exportPrice: ['', Validators.required],
       batteryFillLevel: ['', Validators.required],
       calculationBound: ['', Validators.required],
-      stepCountOverwrite: ['']
+      stepCountOverwrite: ['',Validators.required],
+      timeout: ['',Validators.required]
     });
    }
 
@@ -87,7 +91,8 @@ export class SolverComponent implements OnInit {
       endDate : inFourHours,
       exportPrice : 5,
       batteryFillLevel : 0,
-      calculationBound : 1000
+      calculationBound : 1000,
+      timeout: 10
     })
     //this.table.h
     //this.initCharts();
@@ -109,8 +114,15 @@ export class SolverComponent implements OnInit {
 }
 
   toggleTextView(){
-    this.statusCharts = false;
-    this.statusText = true;
+    if(this.statusCharts && !this.statusText){
+      this.statusCharts = false;
+      this.statusText = true;
+      this.toggleTextButtonText = "Switch to Charts";
+    }else{
+      this.statusCharts = true;
+      this.statusText = false;
+      this.toggleTextButtonText = "Switch to Table";
+    }
   }
 
   toggleTextInTable(){
@@ -128,13 +140,20 @@ export class SolverComponent implements OnInit {
     this.statusFormFill = false;
     this.statusWaiting = true;
     console.log("StartDate:"+ form.startDate + " EndDate:"+ form.endDate);
-    this.solverFetchService.getSolution(form.startDate,form.endDate,form.calculationBound, form.exportPrice).subscribe(solverSolution => {
+    this.solverFetchService.getSolution(form.startDate,form.endDate,form.calculationBound, form.exportPrice,form.stepCountOverwrite,form.timeout).subscribe(solverSolution => {
       this.solverSolution = (solverSolution as SolverSolution);
       console.log(solverSolution);
       this.statusWaiting = false;
       this.statusCharts = true;
       this.initCharts();
       solverSolution = (solverSolution as SolverSolution); 
+      let summedDemand = { 
+        data: [],
+        label: "All Consumer",
+        borderColor: this.randomColor(),
+        fill: false
+        };
+
       let supplyData = { 
         data: [],
         label: "Supply",
@@ -220,6 +239,7 @@ export class SolverComponent implements OnInit {
       };
       let counter = 0;
       solverSolution.solutionSteps.forEach(solverSolutionStep => {
+        summedDemand.data.push({x:counter, y:solverSolutionStep.pd[0]+solverSolutionStep.pd[1]})
         supplyData.data.push({x:counter, y:solverSolutionStep.ps})
         homeConsumer.data.push({x:counter, y:solverSolutionStep.pd[0]});
         officeConsumer.data.push({x:counter, y:solverSolutionStep.pd[1]});
@@ -251,6 +271,7 @@ export class SolverComponent implements OnInit {
       this.chartEnergy.data.datasets.push(negShiftOffice);
       this.chartEnergy.data.datasets.push(batteryChargeRate);
       this.chartEnergy.data.datasets.push(batteryDisChargeRate);
+      this.chartEnergy.data.datasets.push(summedDemand)
 
       this.chartPrice.data.datasets.push(importCost);
       this.chartPrice.data.datasets.push(exportProfit);

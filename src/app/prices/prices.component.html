@@ -38,7 +38,7 @@
             <mat-cell *matCellDef="let element">{{element.date | date:'short'}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="price">
-            <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>Price per MWh in Euro</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.price | currency:'EUR'}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="oldValue">

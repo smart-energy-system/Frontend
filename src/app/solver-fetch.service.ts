@@ -13,11 +13,11 @@ export class SolverFetchService {
 
   constructor(private _http: HttpClient,private _dateFormatPipe:DateFormatPipe) { }
 
-  getSolution(startDate : Moment, endDate: Moment, calculationBound : number, exportPriceInCent : number) {
+  getSolution(startDate : Moment, endDate: Moment, calculationBound : number, exportPriceInCent : number, stepCount : number, timeout: number) {
     let startDateFormatted = this._dateFormatPipe.transform(startDate);
     let endDateFormatted = this._dateFormatPipe.transform(endDate);
     return this._http.get<SolverSolution>('http://localhost:8090/solver?calculationBound='+ calculationBound + '&endDate='+ 
-    endDateFormatted + '&exportPrice='+ exportPriceInCent+ '&startDate='+startDateFormatted) .pipe(
+    endDateFormatted + '&exportPrice='+ exportPriceInCent+ '&startDate='+startDateFormatted + "&maxSteps="+stepCount+ "&timeoutInS="+timeout) .pipe(
       //map(response => (response as SolverSolution)),
       tap(result => console.log('fetched result:'+ result)),
       catchError(this.handleError("Get forecast",[]))
