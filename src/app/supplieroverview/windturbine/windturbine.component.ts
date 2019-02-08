@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,NgZone } from '@angular/core';
 import { ActivatedRoute} from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -28,7 +28,7 @@ export class WindturbineComponent implements OnInit {
   success = false;
   layers;
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private http: HttpClient) {
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private http: HttpClient,private zone: NgZone) {
     this.windturbineForm = this.formBuilder.group({
       displayname: ['' , Validators.required],
       lat: ['' , Validators.required],
@@ -76,8 +76,13 @@ export class WindturbineComponent implements OnInit {
       })
     };
 
-    this.http.put("http://localhost:8090/supplier/windTurbines/" + this.id, data, httpOptions).subscribe();
-    this.success = true;
+    this.http.put("http://localhost:8090/supplier/windTurbines/" + this.id, data, httpOptions).subscribe(()=>{
+      this.zone.runOutsideAngular<any>(()=>{
+        location.reload();
+      });
+      this.success = true;
+    });
+    //this.success = true;
   }
 
   onLeafletClick(event){
