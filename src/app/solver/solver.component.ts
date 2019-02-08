@@ -57,11 +57,6 @@ export class SolverComponent implements OnInit {
   'PositivShiftHome','NegativShiftHome',
   'positivShiftOffice','NegativShiftOffice','batteryFillLevel','batteryChargeRate','discargeRate' ,'importCost','exportProfit'];
   displayedColumns : string[] = this.displayedColumnsWithoutText;
-/*    displayedColumnsWithoutText: string[] = ['step',
-   'OfficeBuildings','Homes','TotalDemand',
-   'TotalSuppliers','Difference','GridImport',
-   'PositivShiftHome','NegativShiftHome',
-   'positivShiftOffice','NegativShiftOffice','batteryFillLevel','batteryChargeRate',discargeRate'importCost','exportProfit']; */
 
   solverSolution : SolverSolution;
 
@@ -94,17 +89,6 @@ export class SolverComponent implements OnInit {
       calculationBound : 1000,
       timeout: 10
     })
-    //this.table.h
-    //this.initCharts();
-    //this.startDatePlaceHolderText = this._dateFormatPipe.transform(now);
-    //this.endDatePlaceHolderText = this._dateFormatPipe.transform(inFourHours);
-    //let htmlRef = this.elementRef.nativeElement.querySelector(`#canvaschartEnergy`);
-    //console.log(htmlRef);
-
-    //this.tableElemntSolutionSteps.push({step:1,text:"jjgffffffffffffffffghfghfghfghfghghfghg<b>fdfddf</b>hfhfghfghfghgfhfghfghfghfghgfhfkjl",variables: "jhkjhjk"});
-    //this.tableElemntSolutionSteps.push({step:2,text:"jjkjl",variables: "jhkjhjk"});
-    //this.tableElemntSolutionSteps.push({step:3,text:"jjkjl",variables: "jhkjhjk"});
-    //this.tableElemntSolutionSteps.push({step:4,text:"jjkjl",variables: "jhkjhjk"});
   }
   randomColor(){
     var r = Math.floor(Math.random() * 255);
@@ -298,19 +282,10 @@ export class SolverComponent implements OnInit {
     this.chartBattery = this.getChart(htmlRef3, "Battery", "kWh");
   }
 
-/*   ngAfterViewInit() {
-    if(this.statusWaiting){
-      this.initCharts();
-    }
-
-  } */
-
-
   private getChart(htmlRef: any,text: string, unit : string) : Chart {
     return new Chart(htmlRef, {
       type: 'line',
       data: {
-        //labels: ["Red", "Blue", "Yellow"],
         datasets: []},
       options: {
         title: {
